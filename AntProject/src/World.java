@@ -1,12 +1,17 @@
 
+import States.SenseDirection;
+import States.Condition;
+
 /**
  * This class represents the game world of the ant game. A world is a 
  * hexagonal grid of 150 by 150.
  * 
  * @author mlg28
- * @version 16 March 2015
+ * @version 18 March 2015
  */
 public class World {
+    
+    private Cell[][] cells;
     
     /**
      * Creates an empty World, which can be used to load and 
@@ -165,5 +170,66 @@ public class World {
      */
     public boolean check_marker_at(Position p, Color color, int marker){
         return true;
+    }
+    
+    /**
+     * Returns true if a marker of the given color exists at the 
+     * given Position.
+     * 
+     * @param p The Position to check for a marker.
+     * @param color The color of the marker to check for.
+     * @return True if a marker of the given color exists at the given Position.
+     */
+    public boolean check_any_marker_at(Position p, Color color){
+        return true;
+    }
+    
+    /**
+     * Returns true if the given condition exists with the given cell; false otherwise.
+     * 
+     * @param p The Position to check for the given condition.
+     * @param cond The condition to check for.
+     * @param color The color of the ant checking for the condition.
+     * @return True if the given condition exists with the given cell; false otherwise.
+     */
+    public boolean cell_matches(Position p, Condition cond, Color color){
+        return true;
+    }
+    
+    /**
+     * Returns the number of ants that are adjacent to the given Position and are of the given color.
+     * 
+     * @param p The position to check for adjacent ants.
+     * @param color The color of the ants to check for.
+     * @return The number of ants that are adjacent to the given Position and are of the given color.
+     */
+    public int adjacent_ants(Position p, Color color){
+        return 0;
+    }
+    
+    /**
+     * Checks if the ant at the given position is surrounded and kills it if it is.
+     * 
+     * @param p The Position to check for an ant.
+     */
+    public void check_for_surrounded_ant_at(Position p){
+    }
+    
+    /**
+     * Checks if the ant at the given position is surrounded or checks if it has now surrounded another ant.
+     * 
+     * @param p The Position to check for an ant.
+     */
+    public void check_for_surrounded_ants(Position p){
+    }
+    
+    /**
+     * Returns the color of the opponent ants.
+     * 
+     * @param color The color to get the opposite of 
+     * @return The color of the opponent ants.
+     */
+    public Color other_color(Color color){
+        return null;
     }
 }

@@ -37,6 +37,7 @@ public class AntBrain {
      * @return The State at the given index.
      */
     public State getState(int stateIndex){
+        return null;
     }
     
     /**
@@ -48,6 +49,7 @@ public class AntBrain {
      * @return A Sense object representing the sense instruction.
      */
     private Sense checkSense(String instruction){
+        return null;
     }
     
     /**
@@ -59,6 +61,7 @@ public class AntBrain {
      * @return A Mark object representing the mark instruction.
      */
     private Mark checkMark(String instruction){
+        return null;
     }
     
     /**
@@ -70,6 +73,7 @@ public class AntBrain {
      * @return An Unmark object representing the unmark instruction.
      */
     private Unmark checkUnmark(String instruction){
+        return null;
     }
     
     /**
@@ -81,6 +85,7 @@ public class AntBrain {
      * @return A PickUp object representing the pickup instruction.
      */
     private PickUp checkPickUp(String instruction){
+        return null;
     }
     
     /**
@@ -92,6 +97,7 @@ public class AntBrain {
      * @return A Drop object representing the drop instruction.
      */
     private Drop checkDrop(String instruction){
+        return null;
     }
     
     /**
@@ -103,6 +109,7 @@ public class AntBrain {
      * @return A Turn object representing the turn instruction.
      */
     private Turn checkTurn(String instruction){
+        return null;
     }
     
     /**
@@ -114,6 +121,7 @@ public class AntBrain {
      * @return A Move object representing the move instruction.
      */
     private Move checkMove(String instruction){
+        return null;
     }
     
     /**
@@ -125,5 +133,6 @@ public class AntBrain {
      * @return A Flip object representing the flip instruction.
      */
     private Flip checkFlip(String instruction){
+        return null;
     }
 }
