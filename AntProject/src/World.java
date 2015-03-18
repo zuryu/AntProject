@@ -6,7 +6,7 @@ import States.Condition;
  * This class represents the game world of the ant game. A world is a 
  * hexagonal grid of 150 by 150.
  * 
- * @author mlg28
+ * @author 118435
  * @version 18 March 2015
  */
 public class World {

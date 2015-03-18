@@ -7,7 +7,7 @@ import States.*;
  * This class represents the ant game. It ties all of the other classes together 
  * and handles the score etc.
  * 
- * @author mlg28
+ * @author 118435
  * @version 18 March 2015
  */
 public class Game {
@@ -16,6 +16,15 @@ public class Game {
     private AntBrain black;                     // The AntBrain for the black ants.
     private World world;                        // The world.
     private HashMap<Integer, Position> ants;    // Holds the Position of every Ant in the world with its id as the key.
+    
+    /**
+     * Starts the ant game.
+     * 
+     * @param args Command-line arguments; none required. 
+     */
+    public static void main(String[] args){
+        new Game();
+    }
     
     /**
      * Creates the game object and starts a game.

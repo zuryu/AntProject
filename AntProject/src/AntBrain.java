@@ -6,13 +6,12 @@ import States.*;
  * ant brain file and holds the states described in that file. It can 
  * return a state based on its index.
  * 
- * @author mlg28
- * @version 16 March 2015
+ * @author 118435
+ * @version 18 March 2015
  */
 public class AntBrain {
     
-    private State[] states;     // An array holding all of the States 
-                                //of the AntBrain.
+    private State[] states;     // An array holding all of the States of the AntBrain.
     
     /**
      * Creates an empty AntBrain, which can be used to load and check the 

@@ -5,7 +5,7 @@ package States;
  * This class represents the State of an ant brain when it is using the 
  * move command.
  * 
- * @author mlg28
+ * @author 118435
  * @version 16 March 2015
  */
 public class Move {

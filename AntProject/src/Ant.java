@@ -2,7 +2,7 @@
 /**
  * This class represents an ant in the ant game.
  * 
- * @author mlg28
+ * @author 118435
  * @version 18 March 2015
  */
 public class Ant {
