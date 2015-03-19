@@ -1,0 +1,4 @@
+Sense Ahead 1 4 Food ;Search ahead for food.
+Sense Here 9 3 Foe	;Search here for foe.
+Sense RightAhead 0 2 Home 	;Search right for home
+Sense LeftAhead 8 3 Rock	;Search left for rock

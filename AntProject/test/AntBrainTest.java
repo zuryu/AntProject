@@ -14,6 +14,7 @@ import static org.junit.Assert.*;
  * @version 18 March 2015
  */
 public class AntBrainTest {
+    private AntBrain ab;
     
     public AntBrainTest() {
     }
@@ -28,6 +29,7 @@ public class AntBrainTest {
     
     @Before
     public void setUp() {
+        ab = new AntBrain();
     }
     
     @After
@@ -39,12 +41,9 @@ public class AntBrainTest {
      */
     @Test
     public void testLoadAntBrain() {
-        System.out.println("loadAntBrain");
-        String path = "";
-        AntBrain instance = new AntBrain();
-        instance.loadAntBrain(path);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
+        // Test Sense command.
+        ab.loadAntBrain();
     }
 
     /**
