@@ -6,7 +6,8 @@ You can view the files without downloading them. On the github repository page c
 Get git from http://git-scm.com/downloads
 
 
-To download the files:
+To download the files the first time:
+
 On the github repository click the fork button in the top right corner.
 
 Open git bash.
@@ -21,6 +22,18 @@ git config --global user.email "Your email"
 git clone https://github.com/zuryu/AntProject.git
 
 Open the project in Netbeans or the java files in another IDE.
+
+
+
+To download files after the first time:
+
+Open git bash.
+
+Use the "cd <path to directory>" to get to the place where you originally placed the repository.
+
+Type:
+git pull
+
 
 
 To upload files:

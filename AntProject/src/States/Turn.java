@@ -6,9 +6,9 @@ package States;
  * turn command.
  * 
  * @author 118435
- * @version 16 March 2015
+ * @version 19 March 2015
  */
-public class Turn {
+public class Turn extends State {
     
     private LeftOrRight leftOrRight;    // The direction in which to turn.
     private int state;                  // The state to go into after the turn.

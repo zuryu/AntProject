@@ -6,9 +6,9 @@ package States;
  * move command.
  * 
  * @author 118435
- * @version 16 March 2015
+ * @version 19 March 2015
  */
-public class Move {
+public class Move extends State {
     
     private int state1;     // The state to move into if the move is successful.
     private int state2;     // The state to move into if the move fails.

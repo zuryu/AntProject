@@ -6,9 +6,9 @@ package States;
  * pickup command.
  * 
  * @author 118435
- * @version 16 March 2015
+ * @version 19 March 2015
  */
-public class PickUp {
+public class PickUp extends State {
     
     private int state1;     // The state to move on to if the pick up is successful.
     private int state2;     // The state to move on to if the pick up fails.

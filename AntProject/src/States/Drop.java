@@ -6,9 +6,9 @@ package States;
  * drop command.
  * 
  * @author 118435
- * @version 16 March 2015
+ * @version 19 March 2015
  */
-public class Drop {
+public class Drop extends State {
     
     private int state;      // The state to move onto after the drop.
 

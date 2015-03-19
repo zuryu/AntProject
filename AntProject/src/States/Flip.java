@@ -6,9 +6,9 @@ package States;
  * flip command.
  * 
  * @author 118435
- * @version 16 March 2015
+ * @version 19 March 2015
  */
-public class Flip {
+public class Flip extends State {
     
     private int maxNumber;      // The maximum possible value of the random number generator.
     private int state1;         // The state to move into if the random number is equal to 0.

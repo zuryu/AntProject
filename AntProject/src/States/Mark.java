@@ -6,9 +6,9 @@ package States;
  * mark command.
  * 
  * @author 118435
- * @version 16 March 2015
+ * @version 19 March 2015
  */
-public class Mark extends State{
+public class Mark extends State {
     
     private int marker;         // The marker to put down.
     private int state;          // The state to move onto next.
