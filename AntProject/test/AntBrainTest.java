@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Tests for the AntBrain class.
  * 
  * @author 118435
- * @version 19 March 2015
+ * @version 21 March 2015
  */
 public class AntBrainTest {
     private AntBrain ab;
@@ -206,7 +206,7 @@ public class AntBrainTest {
         }
     }
     
-     /**
+    /**
      * Test of loadAntBrain method with the Mark command method, of class AntBrain.
      */
     @Test
@@ -285,36 +285,106 @@ public class AntBrainTest {
             }
         }
     }
-         /**
+         
+    /**
      * Test of loadAntBrain method with the PickUp command method, of class AntBrain.
      */
     @Test
     public void testPickUp() {
-        
+        ab.loadAntBrain("../AntFiles/PickUpTest.ant");
+        for(int i = 0; i < 3; i++){
+           assertEquals(true, ab.getState(i).getClass().equals(PickUp.class));
+            PickUp pickUp = (PickUp)ab.getState(i);
+            switch (i){
+                case 0:
+                    assertEquals(20, pickUp.getState1());
+                    assertEquals(9, pickUp.getState2());
+                    break;
+                case 1:
+                    assertEquals(1, pickUp.getState1());
+                    assertEquals(103, pickUp.getState2());
+                    break;
+                case 2:
+                    assertEquals(0, pickUp.getState1());
+                    assertEquals(999, pickUp.getState2());
+                    break;
+                default:
+                    fail("Out of range in test PickUp.");
+            }
+        }
     }
     
-         /**
+    /**
      * Test of loadAntBrain method with the Drop command method, of class AntBrain.
      */
     @Test
     public void testDrop() {
-        
+        ab.loadAntBrain("../AntFiles/DropTest.ant");
+        for(int i = 0; i < 3; i++){
+           assertEquals(true, ab.getState(i).getClass().equals(Drop.class));
+            Drop drop = (Drop)ab.getState(i);
+            switch (i){
+                case 0:
+                    assertEquals(0, drop.getState());
+                    break;
+                case 1:
+                    assertEquals(999, drop.getState());
+                    break;
+                case 2:
+                    assertEquals(23, drop.getState());
+                    break;
+                default:
+                    fail("Out of range in test Drop.");
+            }
+        }
     }
     
-         /**
+    /**
      * Test of loadAntBrain method with the Turn command method, of class AntBrain.
      */
     @Test
     public void testTurn() {
-        
+        ab.loadAntBrain("../AntFiles/TurnTest.ant");
+        for(int i = 0; i < 2; i++){
+            assertEquals(true, ab.getState(i).getClass().equals(Turn.class));
+            Turn turn = (Turn)ab.getState(i);
+            switch (i){
+                case 0:
+                    assertEquals(LeftOrRight.Left, turn.getLeftOrRight());
+                    assertEquals(0, turn.getState());
+                    break;
+                case 1:
+                    assertEquals(LeftOrRight.Right, turn.getLeftOrRight());
+                    assertEquals(9230, turn.getState());
+                    break;
+                default:
+                    fail("Out of range in test Turn.");
+            }
+        }
     }
     
-         /**
+    /**
      * Test of loadAntBrain method with the Move command method, of class AntBrain.
      */
     @Test
     public void testMove() {
-        
+        ab.loadAntBrain("../AntFiles/MoveTest.ant");
+        for(int i = 0; i < 2; i++){
+            assertEquals(true, ab.getState(i).getClass().equals(Move.class));
+            Move move = (Move)ab.getState(i);
+            switch (i){
+                case 0:
+                    assertEquals(18, move.getState1());
+                    assertEquals(0, move.getState2());
+                    break;
+                case 1:
+                    assertEquals(823, move.getState1());
+                    assertEquals(7320, move.getState2());
+                    break;
+                default:
+                    fail("Out of range in test Move.");
+            }
+        }
     }
     
     /**
@@ -322,7 +392,25 @@ public class AntBrainTest {
      */
     @Test
     public void testFlip() {
-        
+        ab.loadAntBrain("../AntFiles/FlipTest.ant");
+        for(int i = 0; i < 2; i++){
+            assertEquals(true, ab.getState(i).getClass().equals(Flip.class));
+            Flip flip = (Flip)ab.getState(i);
+            switch (i){
+                case 0:
+                    assertEquals(10, flip.getMaxNumber());
+                    assertEquals(90, flip.getState1());
+                    assertEquals(1, flip.getState2());
+                    break;
+                case 1:
+                    assertEquals(2, flip.getMaxNumber());
+                    assertEquals(0, flip.getState1());
+                    assertEquals(672, flip.getState2());
+                    break;
+                default:
+                    fail("Out of range in test Flip.");
+            }
+        }
     }
 
     /**
@@ -330,14 +418,15 @@ public class AntBrainTest {
      */
     @Test
     public void testGetState() {
-        System.out.println("getState");
-        int stateIndex = 0;
-        AntBrain instance = new AntBrain();
-        State expResult = null;
-        State result = instance.getState(stateIndex);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        ab.loadAntBrain("../AntFiles/testAnt2.ant");
+        assertEquals(new Sense(SenseDirection.RightAhead, 8, 3, Condition.Home), ab.getState(0));
+        assertEquals(new Mark(3, 72), ab.getState(1));
+        assertEquals(new Unmark(4, 5), ab.getState(2));
+        assertEquals(new PickUp(62, 3), ab.getState(3));
+        assertEquals(new Drop(0), ab.getState(4));
+        assertEquals(new Turn(LeftOrRight.Right, 43), ab.getState(5));
+        assertEquals(new Move(12, 456), ab.getState(6));
+        assertEquals(new Flip(12, 0, 46), ab.getState(7));
     }
     
 }

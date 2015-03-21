@@ -6,7 +6,7 @@ package States;
  * flip command.
  * 
  * @author 118435
- * @version 19 March 2015
+ * @version 21 March 2015
  */
 public class Flip extends State {
     
@@ -14,6 +14,17 @@ public class Flip extends State {
     private int state1;         // The state to move into if the random number is equal to 0.
     private int state2;         // The state to move into if the random number is anything other than 0.
 
+    /**
+     * Creates the Flip object with the given variables. 
+     * Inherits from State.
+     * 
+     * @param maxNumber The maximum possible value of the random number generator.
+     * @param state1 The state to move into if the random number is equal to 0.
+     * @param state2 The state to move into if the random number is anything other than 0.
+     */
+    public Flip(int maxNumber, int state1, int state2){
+    }
+    
     /**
      * Returns the maximum possible value of the random number generator.
      * 

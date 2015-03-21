@@ -33,6 +33,16 @@ public class Game {
     }
     
     /**
+     * Creates the game object and loads the given world and ant brains.
+     * 
+     * @param world The path to the world file.
+     * @param ant1 The path to the first ant brain.
+     * @param ant2 The path to the second ant brain.
+     */
+    public Game(String world, String ant1, String ant2){
+    }
+    
+    /**
      * Returns the instruction at the given State for the given color of ant.
      * 
      * @param color The color of the ant using the instruction.

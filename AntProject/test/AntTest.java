@@ -10,9 +10,12 @@ import static org.junit.Assert.*;
  * Tests for the Ant class.
  * 
  * @author 118435
- * @version 18 March 2015
+ * @version 21 March 2015
  */
 public class AntTest {
+    
+    private Ant a1;
+    private Ant a2;
     
     public AntTest() {
     }
@@ -27,6 +30,8 @@ public class AntTest {
     
     @Before
     public void setUp() {
+        a1 = new Ant(Color.Black, 0);
+        a2 = new Ant(Color.Red, 1);
     }
     
     @After
@@ -38,13 +43,8 @@ public class AntTest {
      */
     @Test
     public void testGetColor() {
-        System.out.println("getColor");
-        Ant instance = null;
-        Color expResult = null;
-        Color result = instance.getColor();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(Color.Black, a1.getColor());
+        assertEquals(Color.Red, a2.getColor());
     }
 
     /**
@@ -52,13 +52,14 @@ public class AntTest {
      */
     @Test
     public void testGetState() {
-        System.out.println("getState");
-        Ant instance = null;
-        int expResult = 0;
-        int result = instance.getState();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, a1.getState());
+        assertEquals(0, a2.getState());
+        
+        a1.setState(90);
+        a2.setState(5003);
+        
+        assertEquals(90, a1.getState());
+        assertEquals(5003, a2.getState());
     }
 
     /**
@@ -66,13 +67,14 @@ public class AntTest {
      */
     @Test
     public void testGetResting() {
-        System.out.println("getResting");
-        Ant instance = null;
-        int expResult = 0;
-        int result = instance.getResting();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, a1.getResting());
+        assertEquals(0, a2.getResting());
+        
+        a1.setResting(12);
+        a2.setResting(45);
+        
+        assertEquals(12, a1.getResting());
+        assertEquals(45, a2.getResting());
     }
 
     /**
@@ -80,13 +82,14 @@ public class AntTest {
      */
     @Test
     public void testGetDirection() {
-        System.out.println("getDirection");
-        Ant instance = null;
-        int expResult = 0;
-        int result = instance.getDirection();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, a1.getDirection());
+        assertEquals(0, a2.getDirection());
+        
+        a1.setDirection(4);
+        a2.setDirection(3);
+        
+        assertEquals(4, a1.getDirection());
+        assertEquals(3, a2.getDirection());
     }
 
     /**
@@ -94,13 +97,13 @@ public class AntTest {
      */
     @Test
     public void testIsHasFood() {
-        System.out.println("isHasFood");
-        Ant instance = null;
-        boolean expResult = false;
-        boolean result = instance.isHasFood();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(false, a1.isHasFood());
+        assertEquals(false, a2.isHasFood());
+        
+        a1.setHasFood(true);
+        
+        assertEquals(true, a1.isHasFood());
+        assertEquals(false, a2.isHasFood());
     }
 
     /**
@@ -108,13 +111,8 @@ public class AntTest {
      */
     @Test
     public void testGetId() {
-        System.out.println("getId");
-        Ant instance = null;
-        int expResult = 0;
-        int result = instance.getId();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, a1.getId());
+        assertEquals(1, a2.getId());
     }
 
     /**
@@ -122,12 +120,20 @@ public class AntTest {
      */
     @Test
     public void testSetState() {
-        System.out.println("setState");
-        int state = 0;
-        Ant instance = null;
-        instance.setState(state);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, a1.getState());
+        assertEquals(0, a2.getState());
+        
+        a1.setState(90);
+        a2.setState(5003);
+        
+        assertEquals(90, a1.getState());
+        assertEquals(5003, a2.getState());
+        
+        a1.setState(0);
+        a2.setState(85);
+        
+        assertEquals(0, a1.getState());
+        assertEquals(85, a2.getState());
     }
 
     /**
@@ -135,12 +141,20 @@ public class AntTest {
      */
     @Test
     public void testSetResting() {
-        System.out.println("setResting");
-        int resting = 0;
-        Ant instance = null;
-        instance.setResting(resting);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, a1.getResting());
+        assertEquals(0, a2.getResting());
+        
+        a1.setResting(23);
+        a2.setResting(450);
+        
+        assertEquals(23, a1.getResting());
+        assertEquals(450, a2.getResting());
+        
+        a1.setResting(2);
+        a2.setResting(69);
+        
+        assertEquals(2, a1.getResting());
+        assertEquals(69, a2.getResting());
     }
 
     /**
@@ -148,12 +162,20 @@ public class AntTest {
      */
     @Test
     public void testSetDirection() {
-        System.out.println("setDirection");
-        int direction = 0;
-        Ant instance = null;
-        instance.setDirection(direction);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, a1.getDirection());
+        assertEquals(0, a2.getDirection());
+        
+        a1.setDirection(1);
+        a2.setDirection(4);
+        
+        assertEquals(1, a1.getDirection());
+        assertEquals(4, a2.getDirection());
+        
+        a1.setDirection(0);
+        a2.setDirection(5);
+        
+        assertEquals(0, a1.getDirection());
+        assertEquals(5, a2.getDirection());
     }
 
     /**
@@ -161,12 +183,19 @@ public class AntTest {
      */
     @Test
     public void testSetHasFood() {
-        System.out.println("setHasFood");
-        boolean hasFood = false;
-        Ant instance = null;
-        instance.setHasFood(hasFood);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(false, a1.isHasFood());
+        assertEquals(false, a2.isHasFood());
+        
+        a1.setHasFood(true);
+        
+        assertEquals(true, a1.isHasFood());
+        assertEquals(false, a2.isHasFood());
+        
+        a1.setHasFood(false);
+        a2.setHasFood(true);
+        
+        assertEquals(false, a1.isHasFood());
+        assertEquals(true, a2.isHasFood());
     }
     
 }

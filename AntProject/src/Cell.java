@@ -3,7 +3,7 @@
  * This class represents a cell in the world of the ant game.
  * 
  * @author 118435
- * @version 18 March 2015
+ * @version 21 March 2015
  */
 public class Cell {
     
@@ -74,5 +74,43 @@ public class Cell {
      */
     public boolean isRocky(){
         return rocky;
+    }
+    
+    /**
+     * Returns true if the cell is part of an anthill; false otherwise.
+     * 
+     * @return True if the cell is part of an anthill; false otherwise.
+     */
+    public boolean isAnthill(){
+        return true;
+    }
+    
+    /**
+     * Returns true if the Cell contains a marker of the given type and given color.
+     * 
+     * @param marker The index of the marker to check for.
+     * @param color The color of the marker to check for.
+     * @return true if the Cell contains a marker of the given type and given color.
+     */
+    public boolean isMarkerSet(int marker, Color color){
+        return true;
+    }
+    
+    /**
+     * Sets the given marker in the Cell.
+     * 
+     * @param marker The marker to set.
+     * @param color The color of the marker to set.
+     */
+    public void setMarker(int marker, Color color){
+    }
+    
+    /**
+     * Unsets the given marker in the Cell.
+     * 
+     * @param marker The marker to unset.
+     * @param color The color of the marker to unset.
+     */
+    public void unsetMarker(int marker, Color color){
     }
 }
