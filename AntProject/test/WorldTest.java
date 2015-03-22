@@ -12,9 +12,11 @@ import static org.junit.Assert.*;
  * Tests for the World class.
  * 
  * @author 118435
- * @version 18 March 2015
+ * @version 22 March 2015
  */
 public class WorldTest {
+    
+    private World world;
     
     public WorldTest() {
     }
@@ -29,6 +31,8 @@ public class WorldTest {
     
     @Before
     public void setUp() {
+        world = new World();
+        world.loadWorld("../WorldFiles/tiny.world");
     }
     
     @After
@@ -40,15 +44,9 @@ public class WorldTest {
      */
     @Test
     public void testAdjacent_cell() {
-        System.out.println("adjacent_cell");
-        Position p = null;
-        int direction = 0;
-        World instance = new World();
-        Position expResult = null;
-        Position result = instance.adjacent_cell(p, direction);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(new Position(5, 5), world.adjacent_cell(new Position(6, 6), 4));
+        assertEquals(new Position(2, 3), world.adjacent_cell(new Position(3, 2), 2));
+        assertEquals(new Position(2, 4), world.adjacent_cell(new Position(1, 4), 0));
     }
 
     /**
@@ -56,16 +54,10 @@ public class WorldTest {
      */
     @Test
     public void testSensed_cell() {
-        System.out.println("sensed_cell");
-        Position p = null;
-        int direction = 0;
-        SenseDirection sense_direction = null;
-        World instance = new World();
-        Position expResult = null;
-        Position result = instance.sensed_cell(p, direction, sense_direction);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(new Position(4, 7), world.sensed_cell(new Position(4, 7), 5, SenseDirection.Here));
+        assertEquals(new Position(2, 0), world.sensed_cell(new Position(1, 0), 0, SenseDirection.Ahead));
+        assertEquals(new Position(3, 4), world.sensed_cell(new Position(3, 3), 3, SenseDirection.LeftAhead));
+        assertEquals(new Position(1, 5), world.sensed_cell(new Position(2, 4), 1, SenseDirection.RightAhead));
     }
 
     /**
@@ -73,12 +65,7 @@ public class WorldTest {
      */
     @Test
     public void testLoadWorld() {
-        System.out.println("loadWorld");
-        String path = "";
-        World instance = new World();
-        instance.loadWorld(path);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        world.loadWorld("../WorldFiles/1.world");
     }
 
     /**
@@ -86,14 +73,8 @@ public class WorldTest {
      */
     @Test
     public void testRocky() {
-        System.out.println("rocky");
-        Position p = null;
-        World instance = new World();
-        boolean expResult = false;
-        boolean result = instance.rocky(p);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(true, world.rocky(new Position(1, 0)));
+        assertEquals(false, world.rocky(new Position(1, 1)));
     }
 
     /**
@@ -101,14 +82,11 @@ public class WorldTest {
      */
     @Test
     public void testSome_ant_is_at() {
-        System.out.println("some_ant_is_at");
-        Position p = null;
-        World instance = new World();
-        boolean expResult = false;
-        boolean result = instance.some_ant_is_at(p);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(true, world.some_ant_is_at(new Position(5, 5)));
+        assertEquals(true, world.some_ant_is_at(new Position(6, 3)));
+        
+        assertEquals(false, world.some_ant_is_at(new Position(3, 1)));
+        assertEquals(false, world.some_ant_is_at(new Position(3, 8)));
     }
 
     /**
@@ -116,14 +94,13 @@ public class WorldTest {
      */
     @Test
     public void testAnt_at() {
-        System.out.println("ant_at");
-        Position p = null;
-        World instance = new World();
-        Ant expResult = null;
-        Ant result = instance.ant_at(p);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Ant a = new Ant(Color.Red, 12);
+        world.set_ant_at(new Position(3, 1), a);
+        assertEquals(a, world.ant_at(new Position(3, 1)));
+        
+        Ant b = new Ant(Color.Black, 3);
+        world.set_ant_at(new Position(4, 8), b);
+        assertEquals(b, world.ant_at(new Position(4, 8)));
     }
 
     /**
@@ -131,13 +108,15 @@ public class WorldTest {
      */
     @Test
     public void testSet_ant_at() {
-        System.out.println("set_ant_at");
-        Position p = null;
-        Ant ant = null;
-        World instance = new World();
-        instance.set_ant_at(p, ant);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(false, world.some_ant_is_at(new Position(3, 1)));
+        Ant a = new Ant(Color.Red, 12);
+        world.set_ant_at(new Position(3, 1), a);
+        assertEquals(a, world.ant_at(new Position(3, 1)));
+        
+        assertEquals(false, world.some_ant_is_at(new Position(4, 8)));
+        Ant b = new Ant(Color.Black, 3);
+        world.set_ant_at(new Position(4, 8), b);
+        assertEquals(b, world.ant_at(new Position(4, 8)));
     }
 
     /**
@@ -145,12 +124,9 @@ public class WorldTest {
      */
     @Test
     public void testClear_ant_at() {
-        System.out.println("clear_ant_at");
-        Position p = null;
-        World instance = new World();
-        instance.clear_ant_at(p);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(true, world.some_ant_is_at(new Position(4, 5)));
+        world.clear_ant_at(new Position(4, 5));
+        assertEquals(false, world.some_ant_is_at(new Position(4, 5)));
     }
 
     /**
@@ -158,12 +134,9 @@ public class WorldTest {
      */
     @Test
     public void testKill_ant_at() {
-        System.out.println("kill_ant_at");
-        Position p = null;
-        World instance = new World();
-        instance.kill_ant_at(p);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(true, world.some_ant_is_at(new Position(5, 2)));
+        world.kill_ant_at(new Position(5, 2));
+        assertEquals(false, world.some_ant_is_at(new Position(5, 2)));
     }
 
     /**
@@ -171,14 +144,9 @@ public class WorldTest {
      */
     @Test
     public void testFood_at() {
-        System.out.println("food_at");
-        Position p = null;
-        World instance = new World();
-        int expResult = 0;
-        int result = instance.food_at(p);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(9, world.food_at(new Position(1, 1)));
+        assertEquals(3, world.food_at(new Position(2, 8)));
+        assertEquals(0, world.food_at(new Position(3, 8)));
     }
 
     /**
@@ -186,13 +154,9 @@ public class WorldTest {
      */
     @Test
     public void testSet_food_at() {
-        System.out.println("set_food_at");
-        Position p = null;
-        int food = 0;
-        World instance = new World();
-        instance.set_food_at(p, food);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(0, world.food_at(new Position(3, 8)));
+        world.set_food_at(new Position(3, 8), 7);
+        assertEquals(7, world.food_at(new Position(3, 8)));
     }
 
     /**
@@ -200,15 +164,14 @@ public class WorldTest {
      */
     @Test
     public void testAnthill_at() {
-        System.out.println("anthill_at");
-        Position p = null;
-        Color color = null;
-        World instance = new World();
-        boolean expResult = false;
-        boolean result = instance.anthill_at(p, color);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(true, world.anthill_at(new Position(4, 3), Color.Black));
+        assertEquals(false, world.anthill_at(new Position(4, 3), Color.Red));
+        
+        assertEquals(true, world.anthill_at(new Position(5, 5), Color.Red));
+        assertEquals(false, world.anthill_at(new Position(5, 5), Color.Black));
+        
+        assertEquals(false, world.anthill_at(new Position(0, 0), Color.Red));
+        assertEquals(false, world.anthill_at(new Position(0, 0), Color.Black));
     }
 
     /**
@@ -216,14 +179,9 @@ public class WorldTest {
      */
     @Test
     public void testSet_marker_at() {
-        System.out.println("set_marker_at");
-        Position p = null;
-        Color color = null;
-        int marker = 0;
-        World instance = new World();
-        instance.set_marker_at(p, color, marker);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(false, world.check_marker_at(new Position(4, 5), Color.Red, 3));
+        world.set_marker_at(new Position(4, 5), Color.Red, 3);
+        assertEquals(true, world.check_marker_at(new Position(4, 5), Color.Red, 3));
     }
 
     /**
@@ -231,14 +189,10 @@ public class WorldTest {
      */
     @Test
     public void testClear_marker_at() {
-        System.out.println("clear_marker_at");
-        Position p = null;
-        Color color = null;
-        int marker = 0;
-        World instance = new World();
-        instance.clear_marker_at(p, color, marker);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        world.set_marker_at(new Position(6, 1), Color.Black, 2);
+        assertEquals(true, world.check_marker_at(new Position(6, 1), Color.Black, 2));
+        world.clear_marker_at(new Position(6, 1), Color.Black, 2);
+        assertEquals(false, world.check_marker_at(new Position(6, 1), Color.Black, 2));
     }
 
     /**
@@ -246,16 +200,10 @@ public class WorldTest {
      */
     @Test
     public void testCheck_marker_at() {
-        System.out.println("check_marker_at");
-        Position p = null;
-        Color color = null;
-        int marker = 0;
-        World instance = new World();
-        boolean expResult = false;
-        boolean result = instance.check_marker_at(p, color, marker);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        world.set_marker_at(new Position(5, 2), Color.Black, 0);
+        assertEquals(true, world.check_marker_at(new Position(5, 2), Color.Black, 0));
+        world.clear_marker_at(new Position(5, 2), Color.Black, 0);
+        assertEquals(false, world.check_marker_at(new Position(5, 2), Color.Black, 0));
     }
 
     /**
@@ -263,15 +211,11 @@ public class WorldTest {
      */
     @Test
     public void testCheck_any_marker_at() {
-        System.out.println("check_any_marker_at");
-        Position p = null;
-        Color color = null;
-        World instance = new World();
-        boolean expResult = false;
-        boolean result = instance.check_any_marker_at(p, color);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        world.set_marker_at(new Position(6, 1), Color.Black, 2);
+        assertEquals(true, world.check_any_marker_at(new Position(6, 1), Color.Black));
+        assertEquals(false, world.check_any_marker_at(new Position(6, 1), Color.Red));
+        world.clear_marker_at(new Position(6, 1), Color.Black, 2);
+        assertEquals(false, world.check_any_marker_at(new Position(6, 1), Color.Black));
     }
 
     /**
@@ -279,16 +223,17 @@ public class WorldTest {
      */
     @Test
     public void testCell_matches() {
-        System.out.println("cell_matches");
-        Position p = null;
-        Condition cond = null;
-        Color color = null;
-        World instance = new World();
-        boolean expResult = false;
-        boolean result = instance.cell_matches(p, cond, color);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(true, world.cell_matches(new Position(7, 1), Condition.Food, Color.Red));
+        assertEquals(true, world.cell_matches(new Position(7, 2), Condition.Home, Color.Black));
+        assertEquals(true, world.cell_matches(new Position(4, 5), Condition.FoeHome, Color.Black));
+        assertEquals(true, world.cell_matches(new Position(5, 5), Condition.Friend, Color.Red));
+        assertEquals(true, world.cell_matches(new Position(7, 0), Condition.Rock, Color.Red));
+        
+        assertEquals(false, world.cell_matches(new Position(7, 0), Condition.Food, Color.Red));
+        assertEquals(false, world.cell_matches(new Position(7, 2), Condition.Home, Color.Red));
+        assertEquals(false, world.cell_matches(new Position(4, 5), Condition.FoeHome, Color.Red));
+        assertEquals(false, world.cell_matches(new Position(5, 5), Condition.Friend, Color.Black));
+        assertEquals(false, world.cell_matches(new Position(7, 1), Condition.Rock, Color.Red));
     }
 
     /**
@@ -296,15 +241,8 @@ public class WorldTest {
      */
     @Test
     public void testAdjacent_ants() {
-        System.out.println("adjacent_ants");
-        Position p = null;
-        Color color = null;
-        World instance = new World();
-        int expResult = 0;
-        int result = instance.adjacent_ants(p, color);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(6, world.adjacent_ants(new Position(4, 6), Color.Red));
+        assertEquals(4, world.adjacent_ants(new Position(5, 4), Color.Black));
     }
 
     /**
@@ -312,12 +250,22 @@ public class WorldTest {
      */
     @Test
     public void testCheck_for_surrounded_ant_at() {
-        System.out.println("check_for_surrounded_ant_at");
-        Position p = null;
-        World instance = new World();
-        instance.check_for_surrounded_ant_at(p);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        world.clear_ant_at(new Position(4, 6));
+        world.clear_ant_at(new Position(5, 4));
+        world.set_ant_at(new Position(4, 6), new Ant(Color.Black, 5));
+        world.set_ant_at(new Position(5, 4), new Ant(Color.Red, 6));
+        
+        
+        assertEquals(6, world.adjacent_ants(new Position(4, 6), Color.Red));
+        assertEquals(4, world.adjacent_ants(new Position(5, 4), Color.Black));
+        assertEquals(true, world.some_ant_is_at(new Position(4, 6)));
+        assertEquals(true, world.some_ant_is_at(new Position(5, 4)));
+        
+        world.check_for_surrounded_ant_at(new Position(4, 6));
+        world.check_for_surrounded_ant_at(new Position(5, 4));
+        
+        assertEquals(false, world.some_ant_is_at(new Position(4, 6)));
+        assertEquals(true, world.some_ant_is_at(new Position(5, 4)));
     }
 
     /**
@@ -325,12 +273,21 @@ public class WorldTest {
      */
     @Test
     public void testCheck_for_surrounded_ants() {
-        System.out.println("check_for_surrounded_ants");
-        Position p = null;
-        World instance = new World();
-        instance.check_for_surrounded_ants(p);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        world.clear_ant_at(new Position(4, 6));
+        world.clear_ant_at(new Position(5, 4));
+        world.set_ant_at(new Position(4, 6), new Ant(Color.Black, 5));
+        world.set_ant_at(new Position(5, 4), new Ant(Color.Red, 6));
+        
+        assertEquals(6, world.adjacent_ants(new Position(4, 6), Color.Red));
+        assertEquals(4, world.adjacent_ants(new Position(5, 4), Color.Black));
+        assertEquals(true, world.some_ant_is_at(new Position(4, 6)));
+        assertEquals(true, world.some_ant_is_at(new Position(5, 4)));
+        
+        world.check_for_surrounded_ants(new Position(3, 5));
+        world.check_for_surrounded_ants(new Position(4, 5));
+        
+        assertEquals(false, world.some_ant_is_at(new Position(4, 6)));
+        assertEquals(true, world.some_ant_is_at(new Position(5, 4)));
     }
 
     /**
@@ -338,14 +295,8 @@ public class WorldTest {
      */
     @Test
     public void testOther_color() {
-        System.out.println("other_color");
-        Color color = null;
-        World instance = new World();
-        Color expResult = null;
-        Color result = instance.other_color(color);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(Color.Black, world.other_color(Color.Red));
+        assertEquals(Color.Red, world.other_color(Color.Black));
     }
     
 }

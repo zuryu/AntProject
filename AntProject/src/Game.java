@@ -111,4 +111,13 @@ public class Game {
     public int turn(LeftOrRight leftOrRight, int direction){
         return 0;
     }
+    
+    /**
+     * Returns the world of the ant game; for testing only.
+     * 
+     * @return The world of the ant game.
+     */
+    public World getWorld(){
+        return world;
+    }
 }

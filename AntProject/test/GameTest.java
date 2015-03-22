@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  * Tests for the Game class.
  * 
  * @author 118435
- * @version 21 March 2015
+ * @version 22 March 2015
  */
 public class GameTest {
     private Game game;
@@ -31,7 +31,7 @@ public class GameTest {
     
     @Before
     public void setUp() {        
-        game = new Game("../WorldFiles/testWorld1.", "../AntFiles/testAnt2.ant", "../AntFiles/testAnt2.ant");
+        game = new Game("../WorldFiles/tiny.world", "../AntFiles/testAnt2.ant", "../AntFiles/testAnt2.ant");
         game2 = new Game();
     }
     
@@ -77,24 +77,7 @@ public class GameTest {
      */
     @Test
     public void testNewGame() {
-        game2.newGame("../WorldFiles/testWorld1.", "../AntFiles/testAnt2.ant", "../AntFiles/testAnt2.ant");
-    }
-
-    /**
-     * Test of randomint method, of class Game.
-     */
-    @Test
-    public void testRandomint() {
-        int[] expected = new int[] {7193, 2932, 10386, 5575, 100, 15976, 430, 9740, 9449, 1636, 11030, 9848, 13965, 16051, 14483, 
-                                    6708, 5184, 15931, 7014, 461, 11371, 5856, 2136, 9139, 1684, 15900, 10236, 13297, 1364, 6876, 
-                                    15687, 14127, 11387, 13469, 11860, 15589, 14209, 16327, 7024, 3297, 3120, 842, 12397, 9212, 5520, 
-                                    4983, 7205, 7193, 4883, 7712, 6732, 7006, 10241, 1012, 15227, 9910, 14119, 15124, 6010, 13191, 
-                                    5820, 14074, 5582, 5297, 10387, 4492, 14468, 7879, 8839, 12668, 5436, 8081, 4900, 10723, 10360, 
-                                    1218, 11923, 3870, 12071, 3574, 12232, 15592, 12909, 9711, 6638, 2488, 12725, 16145, 9746, 9053, 
-                                    5881, 3867, 10512, 4312, 8529, 1576, 15803, 5498, 12730, 7397};
-        for (int i = 0; i < 100; i++){
-            assertEquals(expected[i], );
-        }
+        game2.newGame("../WorldFiles/tiny.world", "../AntFiles/testAnt2.ant", "../AntFiles/testAnt2.ant");
     }
 
     /**
@@ -102,12 +85,7 @@ public class GameTest {
      */
     @Test
     public void testStep() {
-        System.out.println("step");
-        int id = 0;
-        Game instance = new Game();
-        instance.step(id);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        game.step(0);
     }
 
     /**
@@ -115,14 +93,9 @@ public class GameTest {
      */
     @Test
     public void testAnt_is_alive() {
-        System.out.println("ant_is_alive");
-        int id = 0;
-        Game instance = new Game();
-        boolean expResult = false;
-        boolean result = instance.ant_is_alive(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(true, game.ant_is_alive(0));
+        game.getWorld().kill_ant_at(game.find_ant(0));
+        assertEquals(false, game.ant_is_alive(0));
     }
 
     /**
@@ -130,14 +103,9 @@ public class GameTest {
      */
     @Test
     public void testFind_ant() {
-        System.out.println("find_ant");
-        int id = 0;
-        Game instance = new Game();
-        Position expResult = null;
-        Position result = instance.find_ant(id);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        game.getWorld().set_ant_at(new Position(10, 20), new Ant(Color.Black, 8));
+        assertEquals(10, game.find_ant(8).x);
+        assertEquals(20, game.find_ant(8).y);
     }
 
     /**
@@ -145,27 +113,11 @@ public class GameTest {
      */
     @Test
     public void testTurn() {
-        System.out.println("turn");
-        LeftOrRight leftOrRight = null;
-        int direction = 0;
-        Game instance = new Game();
-        int expResult = 0;
-        int result = instance.turn(leftOrRight, direction);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of main method, of class Game.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        Game.main(args);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(5, game.turn(LeftOrRight.Left, 0));
+        assertEquals(3, game.turn(LeftOrRight.Left, 4));
+        
+        assertEquals(0, game.turn(LeftOrRight.Right, 5));
+        assertEquals(4, game.turn(LeftOrRight.Right, 3));
     }
     
 }
