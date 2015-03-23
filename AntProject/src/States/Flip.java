@@ -6,7 +6,7 @@ package States;
  * flip command.
  * 
  * @author 118435
- * @version 21 March 2015
+ * @version 22 March 2015
  */
 public class Flip extends State {
     
@@ -23,6 +23,9 @@ public class Flip extends State {
      * @param state2 The state to move into if the random number is anything other than 0.
      */
     public Flip(int maxNumber, int state1, int state2){
+        this.maxNumber = maxNumber;
+        this.state1 = state1;
+        this.state2 = state2;
     }
     
     /**

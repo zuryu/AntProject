@@ -6,7 +6,7 @@ package States;
  * pickup command.
  * 
  * @author 118435
- * @version 19 March 2015
+ * @version 22 March 2015
  */
 public class PickUp extends State {
     
@@ -21,6 +21,8 @@ public class PickUp extends State {
      * @param state2 The state to move on to if the pick up fails. 
      */
     public PickUp(int state1, int state2){
+        this.state1 = state1;
+        this.state2 = state2;
     }
     
     /**

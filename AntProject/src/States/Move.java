@@ -6,7 +6,7 @@ package States;
  * move command.
  * 
  * @author 118435
- * @version 21 March 2015
+ * @version 22 March 2015
  */
 public class Move extends State {
     
@@ -21,6 +21,8 @@ public class Move extends State {
      * @param state2 The state to move into if the move fails.
      */
     public Move(int state1, int state2){
+        this.state1 = state1;
+        this.state2 = state2;
     }
     
     /**

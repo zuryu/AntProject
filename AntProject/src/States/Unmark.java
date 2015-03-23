@@ -6,7 +6,7 @@ package States;
  * unmark command.
  * 
  * @author 118435
- * @version 19 March 2015
+ * @version 22 March 2015
  */
 public class Unmark extends State {
     
@@ -21,6 +21,8 @@ public class Unmark extends State {
      * @param state The state to move onto next.
      */
     public Unmark(int marker, int state){
+        this.marker = marker;
+        this.state = state;
     }
     
     /**

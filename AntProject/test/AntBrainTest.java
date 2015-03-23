@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Tests for the AntBrain class.
  * 
  * @author 118435
- * @version 21 March 2015
+ * @version 22 March 2015
  */
 public class AntBrainTest {
     private AntBrain ab;
@@ -29,7 +29,7 @@ public class AntBrainTest {
     
     @Before
     public void setUp() {
-        ab = new AntBrain();
+        ab = new AntBrain("AntFiles/testAnt1.ant");
     }
     
     @After
@@ -42,7 +42,7 @@ public class AntBrainTest {
     @Test
     public void testLoadAntBrain() {
         
-        ab.loadAntBrain("../AntFiles/testAnt1.ant");
+        ab.loadAntBrain("AntFiles/testAnt1.ant");
         assertEquals(true, ab.getState(0).getClass().equals(Sense.class));
         Sense sense = (Sense)ab.getState(0);
         assertEquals(SenseDirection.Ahead, sense.getDirection());
@@ -138,7 +138,7 @@ public class AntBrainTest {
     @Test
     public void testSense() {
         
-        ab.loadAntBrain("../AntFiles/SenseTest.ant");
+        ab.loadAntBrain("AntFiles/SenseTest.ant");
         for (int i = 0; i < 19; i++){
             assertEquals(true, ab.getState(i).getClass().equals(Sense.class));
             Sense sense = (Sense)ab.getState(i);
@@ -211,7 +211,7 @@ public class AntBrainTest {
      */
     @Test
     public void testMark() {
-        ab.loadAntBrain("../AntFiles/MarkTest.ant");
+        ab.loadAntBrain("AntFiles/MarkTest.ant");
         for (int i = 0; i < 6; i++){
             assertEquals(true, ab.getState(i).getClass().equals(Mark.class));
             Mark mark = (Mark)ab.getState(i);
@@ -251,7 +251,7 @@ public class AntBrainTest {
      */
     @Test
     public void testUnmark() {
-        ab.loadAntBrain("../AntFiles/UnmarkTest.ant");
+        ab.loadAntBrain("AntFiles/UnmarkTest.ant");
         for (int i = 0; i < 6; i++){
             assertEquals(true, ab.getState(i).getClass().equals(Unmark.class));
             Unmark unmark = (Unmark)ab.getState(i);
@@ -291,7 +291,7 @@ public class AntBrainTest {
      */
     @Test
     public void testPickUp() {
-        ab.loadAntBrain("../AntFiles/PickUpTest.ant");
+        ab.loadAntBrain("AntFiles/PickUpTest.ant");
         for(int i = 0; i < 3; i++){
            assertEquals(true, ab.getState(i).getClass().equals(PickUp.class));
             PickUp pickUp = (PickUp)ab.getState(i);
@@ -319,7 +319,7 @@ public class AntBrainTest {
      */
     @Test
     public void testDrop() {
-        ab.loadAntBrain("../AntFiles/DropTest.ant");
+        ab.loadAntBrain("AntFiles/DropTest.ant");
         for(int i = 0; i < 3; i++){
            assertEquals(true, ab.getState(i).getClass().equals(Drop.class));
             Drop drop = (Drop)ab.getState(i);
@@ -344,7 +344,7 @@ public class AntBrainTest {
      */
     @Test
     public void testTurn() {
-        ab.loadAntBrain("../AntFiles/TurnTest.ant");
+        ab.loadAntBrain("AntFiles/TurnTest.ant");
         for(int i = 0; i < 2; i++){
             assertEquals(true, ab.getState(i).getClass().equals(Turn.class));
             Turn turn = (Turn)ab.getState(i);
@@ -368,7 +368,7 @@ public class AntBrainTest {
      */
     @Test
     public void testMove() {
-        ab.loadAntBrain("../AntFiles/MoveTest.ant");
+        ab.loadAntBrain("AntFiles/MoveTest.ant");
         for(int i = 0; i < 2; i++){
             assertEquals(true, ab.getState(i).getClass().equals(Move.class));
             Move move = (Move)ab.getState(i);
@@ -392,7 +392,7 @@ public class AntBrainTest {
      */
     @Test
     public void testFlip() {
-        ab.loadAntBrain("../AntFiles/FlipTest.ant");
+        ab.loadAntBrain("AntFiles/FlipTest.ant");
         for(int i = 0; i < 2; i++){
             assertEquals(true, ab.getState(i).getClass().equals(Flip.class));
             Flip flip = (Flip)ab.getState(i);
@@ -418,7 +418,7 @@ public class AntBrainTest {
      */
     @Test
     public void testGetState() {
-        ab.loadAntBrain("../AntFiles/testAnt2.ant");
+        ab.loadAntBrain("AntFiles/testAnt2.ant");
         assertEquals(new Sense(SenseDirection.RightAhead, 8, 3, Condition.Home), ab.getState(0));
         assertEquals(new Mark(3, 72), ab.getState(1));
         assertEquals(new Unmark(4, 5), ab.getState(2));

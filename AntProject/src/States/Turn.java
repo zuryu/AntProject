@@ -6,7 +6,7 @@ package States;
  * turn command.
  * 
  * @author 118435
- * @version 19 March 2015
+ * @version 22 March 2015
  */
 public class Turn extends State {
     
@@ -21,6 +21,8 @@ public class Turn extends State {
      * @param state The state to go into after the turn.
      */
     public Turn(LeftOrRight leftOrRight, int state){
+        this.leftOrRight = leftOrRight;
+        this.state = state;
     }
     
     /**

@@ -6,7 +6,7 @@ package States;
  * drop command.
  * 
  * @author 118435
- * @version 19 March 2015
+ * @version 22 March 2015
  */
 public class Drop extends State {
     
@@ -19,6 +19,7 @@ public class Drop extends State {
      * @param state The state to move onto after the drop.
      */
     public Drop(int state){
+        this.state = state;
     }
     
     /**

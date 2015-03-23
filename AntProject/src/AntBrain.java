@@ -1,5 +1,12 @@
 
 import States.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class represents an AntBrain in the ant game. It reads the input
@@ -11,13 +18,17 @@ import States.*;
  */
 public class AntBrain {
     
-    private State[] states;     // An array holding all of the States of the AntBrain.
+    private ArrayList<State> states;     // An array holding all of the States of the AntBrain.
     
     /**
      * Creates an empty AntBrain, which can be used to load and check the 
      * user provided ant brains.
+     * 
+     * @param path The file path to the user provided ant brain.
      */
-    public AntBrain(){
+    public AntBrain(String path){
+        states = new ArrayList<>();
+        loadAntBrain(path);
     }
     
     /**
@@ -26,7 +37,61 @@ public class AntBrain {
      * 
      * @param path The file path to the user provided ant brain.
      */
-    public void loadAntBrain(String path){
+    public final void loadAntBrain(String path){
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader(path)); 
+            String line;
+            while ((line = reader.readLine()) != null){
+                checkState(line);
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AntBrain.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AntBrain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Checks what type of state the line of text describes and returns the 
+     * correct State object.
+     * 
+     * @param line The string of text describing the State.
+     * @return The State object described by the given string.
+     */
+    private State checkState(String line) throws IllegalArgumentException {
+        String[] words = line.split("[ \n\t\f\r'']");
+        State state;
+        switch (words[0]){
+            case "Sense":
+                states.add(checkSense(words));
+                break;
+            case "Mark":
+                states.add(checkMark(words));
+                break;
+            case "Unmark":
+                states.add(checkUnmark(words));
+                break;
+            case "PickUp":
+                states.add(checkPickUp(words));
+                break;
+            case "Drop":
+                states.add(checkDrop(words));
+                break;
+            case "Turn":
+                states.add(checkTurn(words));
+                break;
+            case "Move":
+                states.add(checkMove(words));
+                break;
+            case "Flip":
+                states.add(checkFlip(words));
+                break;
+            case "":
+            case " ":
+            case ""
+            default:
+                throw new IllegalArgumentException("Unrecognised state in AntBrain.");
+        }
     }
     
     /**
@@ -36,7 +101,7 @@ public class AntBrain {
      * @return The State at the given index.
      */
     public State getState(int stateIndex){
-        return null;
+        return states.get(stateIndex);
     }
     
     /**
@@ -47,8 +112,96 @@ public class AntBrain {
      * @param instruction The sense instruction from the ant brain file.
      * @return A Sense object representing the sense instruction.
      */
-    private Sense checkSense(String instruction){
-        return null;
+    private Sense checkSense(String[] instruction){
+        if (instruction.length < 5){
+            throw new IllegalArgumentException("Not enough arguments for Sense instruction.");
+        }
+        
+        if (instruction[4].equals("Marker") && instruction.length < 6){
+            throw new IllegalArgumentException("Marker index not given in Sense instruction or too many arguments given.");
+        }
+        
+        SenseDirection direction;
+        Condition cond;
+        int state1;
+        int state2;
+        switch (instruction[1]){
+            case "Here":
+                direction = SenseDirection.Here;
+                break;
+            case "Ahead":
+                direction = SenseDirection.Ahead;
+                break;
+            case "LeftAhead":
+                direction = SenseDirection.LeftAhead;
+                break;
+            case "RightAhead":
+                direction = SenseDirection.RightAhead;
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal SenseDirection in Sense instruction.");
+        }
+        
+        switch (instruction[4]){
+            case "Friend":
+                cond = Condition.Friend;
+                break;
+            case "Foe":
+                cond = Condition.Foe;
+                break;
+            case "FriendWithFood":
+                cond = Condition.FriendWithFood;
+                break;
+            case "FoeWithFood":
+                cond = Condition.FoeWithFood;
+                break;
+            case "Food":
+                cond = Condition.Food;
+                break;
+            case "Rock":
+                cond = Condition.Rock;
+                break;
+            case "Marker":
+                switch (instruction[5]){
+                    case "0":
+                        cond = Condition.Marker0;
+                        break;
+                    case "1":
+                        cond = Condition.Marker1;
+                        break;
+                    case "2":
+                        cond = Condition.Marker2;
+                        break;
+                    case "3":
+                        cond = Condition.Marker3;
+                        break;
+                    case "4":
+                        cond = Condition.Marker4;
+                        break;
+                    case "5":
+                        cond = Condition.Marker5;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Illegal marker index in sense instruction.");
+                }
+                break;
+            case "FoeMarker":
+                cond = Condition.FoeMarker;
+                break;
+            case "Home":
+                cond = Condition.Home;
+                break;
+            case "FoeHome":
+                cond = Condition.FoeHome;
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal condition in sense instruction.");
+        }
+        
+        state1 = Integer.parseInt(instruction[2]);
+        state2 = Integer.parseInt(instruction[3]);
+        
+        return new Sense(direction, state1, state2, cond);
     }
     
     /**
@@ -59,7 +212,7 @@ public class AntBrain {
      * @param instruction The mark instruction from the ant brain file.
      * @return A Mark object representing the mark instruction.
      */
-    private Mark checkMark(String instruction){
+    private Mark checkMark(String[] instruction){
         return null;
     }
     
@@ -71,7 +224,7 @@ public class AntBrain {
      * @param instruction The unmark instruction from the ant brain file.
      * @return An Unmark object representing the unmark instruction.
      */
-    private Unmark checkUnmark(String instruction){
+    private Unmark checkUnmark(String[] instruction){
         return null;
     }
     
@@ -83,7 +236,7 @@ public class AntBrain {
      * @param instruction The pickup instruction from the ant brain file.
      * @return A PickUp object representing the pickup instruction.
      */
-    private PickUp checkPickUp(String instruction){
+    private PickUp checkPickUp(String[] instruction){
         return null;
     }
     
@@ -95,7 +248,7 @@ public class AntBrain {
      * @param instruction The drop instruction from the ant brain file.
      * @return A Drop object representing the drop instruction.
      */
-    private Drop checkDrop(String instruction){
+    private Drop checkDrop(String[] instruction){
         return null;
     }
     
@@ -107,7 +260,7 @@ public class AntBrain {
      * @param instruction The turn instruction from the ant brain file.
      * @return A Turn object representing the turn instruction.
      */
-    private Turn checkTurn(String instruction){
+    private Turn checkTurn(String[] instruction){
         return null;
     }
     
@@ -119,7 +272,7 @@ public class AntBrain {
      * @param instruction The move instruction from the ant brain file.
      * @return A Move object representing the move instruction.
      */
-    private Move checkMove(String instruction){
+    private Move checkMove(String[] instruction){
         return null;
     }
     
@@ -131,7 +284,7 @@ public class AntBrain {
      * @param instruction The flip instruction from the ant brain file.
      * @return A Flip object representing the flip instruction.
      */
-    private Flip checkFlip(String instruction){
+    private Flip checkFlip(String[] instruction){
         return null;
     }
 }

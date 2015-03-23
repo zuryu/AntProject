@@ -6,7 +6,7 @@ package States;
  * sense command.
  * 
  * @author 118435
- * @version 16 March 2015
+ * @version 22 March 2015
  */
 public class Sense extends State {
     
@@ -25,6 +25,10 @@ public class Sense extends State {
      * @param condition The condition to check for in the given direction.
      */
     public Sense(SenseDirection direction, int state1, int state2, Condition condition){
+        this.condition = condition;
+        this.direction = direction;
+        this.state1 = state1;
+        this.state2 = state2;
     }
     
     /**
