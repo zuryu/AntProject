@@ -58,40 +58,51 @@ public class AntBrain {
      * @param line The string of text describing the State.
      * @return The State object described by the given string.
      */
-    private State checkState(String line) throws IllegalArgumentException {
-        String[] words = line.split("[ \n\t\f\r'']");
-        State state;
-        switch (words[0]){
+    private State checkState(String line){
+        
+        ArrayList<String> words = splitWords(line);
+
+        switch (words.get(0)){
             case "Sense":
-                states.add(checkSense(words));
-                break;
+                return checkSense(words);
             case "Mark":
-                states.add(checkMark(words));
-                break;
+                return checkMark(words);
             case "Unmark":
-                states.add(checkUnmark(words));
-                break;
+                return checkUnmark(words);
             case "PickUp":
-                states.add(checkPickUp(words));
-                break;
+                return checkPickUp(words);
             case "Drop":
-                states.add(checkDrop(words));
-                break;
+                return checkDrop(words);
             case "Turn":
-                states.add(checkTurn(words));
-                break;
+                return checkTurn(words);
             case "Move":
-                states.add(checkMove(words));
-                break;
+                return checkMove(words);
             case "Flip":
-                states.add(checkFlip(words));
-                break;
-            case "":
-            case " ":
-            case ""
+                return checkFlip(words);
             default:
                 throw new IllegalArgumentException("Unrecognised state in AntBrain.");
         }
+    }
+    
+    /**
+     * 
+     * @param line
+     * @return 
+     */
+    public ArrayList<String> splitWords(String line){
+        ArrayList<String> words = new ArrayList<>();
+        String word = "";
+        for (char letter : line.toCharArray()){
+            if (Character.isLetterOrDigit(letter)){
+                word = word.concat(Character.toString(letter));
+            } else {
+                if (!word.isEmpty()){
+                    words.add(word);
+                }
+                word = "";
+            }
+        }
+        return words;
     }
     
     /**
@@ -112,7 +123,7 @@ public class AntBrain {
      * @param instruction The sense instruction from the ant brain file.
      * @return A Sense object representing the sense instruction.
      */
-    private Sense checkSense(String[] instruction){
+    private Sense checkSense(ArrayList<String> words){
         if (instruction.length < 5){
             throw new IllegalArgumentException("Not enough arguments for Sense instruction.");
         }
@@ -212,7 +223,7 @@ public class AntBrain {
      * @param instruction The mark instruction from the ant brain file.
      * @return A Mark object representing the mark instruction.
      */
-    private Mark checkMark(String[] instruction){
+    private Mark checkMark(ArrayList<String> words){
         return null;
     }
     
@@ -224,7 +235,7 @@ public class AntBrain {
      * @param instruction The unmark instruction from the ant brain file.
      * @return An Unmark object representing the unmark instruction.
      */
-    private Unmark checkUnmark(String[] instruction){
+    private Unmark checkUnmark(ArrayList<String> words){
         return null;
     }
     
@@ -236,7 +247,7 @@ public class AntBrain {
      * @param instruction The pickup instruction from the ant brain file.
      * @return A PickUp object representing the pickup instruction.
      */
-    private PickUp checkPickUp(String[] instruction){
+    private PickUp checkPickUp(ArrayList<String> words){
         return null;
     }
     
@@ -248,7 +259,7 @@ public class AntBrain {
      * @param instruction The drop instruction from the ant brain file.
      * @return A Drop object representing the drop instruction.
      */
-    private Drop checkDrop(String[] instruction){
+    private Drop checkDrop(ArrayList<String> words){
         return null;
     }
     
@@ -260,7 +271,7 @@ public class AntBrain {
      * @param instruction The turn instruction from the ant brain file.
      * @return A Turn object representing the turn instruction.
      */
-    private Turn checkTurn(String[] instruction){
+    private Turn checkTurn(ArrayList<String> words){
         return null;
     }
     
@@ -272,7 +283,7 @@ public class AntBrain {
      * @param instruction The move instruction from the ant brain file.
      * @return A Move object representing the move instruction.
      */
-    private Move checkMove(String[] instruction){
+    private Move checkMove(ArrayList<String> words){
         return null;
     }
     
@@ -284,7 +295,7 @@ public class AntBrain {
      * @param instruction The flip instruction from the ant brain file.
      * @return A Flip object representing the flip instruction.
      */
-    private Flip checkFlip(String[] instruction){
+    private Flip checkFlip(ArrayList<String> words){
         return null;
     }
 }
