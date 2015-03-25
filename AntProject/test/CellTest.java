@@ -32,10 +32,10 @@ public class CellTest {
     
     @Before
     public void setUp() {
-        c1 = new Cell(a1);
-        c2 = new Cell(true, 0);
-        c3 = new Cell(false, 5);
         a1 = new Ant(Color.Black, 7);
+        c1 = new Cell(a1);
+        c2 = new Cell(true);
+        c3 = new Cell(5);
     }
     
     @After
@@ -47,14 +47,7 @@ public class CellTest {
      */
     @Test
     public void testFails(){
-        
-        //Try to put food or an ant in a rocky Cell.
-        try {
-            c1 = new Cell(true, 5);
-            fail("Rocky Cell created with food.");
-        } catch (IllegalArgumentException e){
-        }
-        
+                
         try {
             c2.setFood(10);
             fail("Tried to add food to a rocky Cell.");

@@ -3,13 +3,13 @@
  * This class represents a cell in the world of the ant game.
  * 
  * @author 118435
- * @version 21 March 2015
+ * @version 25 March 2015
  */
 public class Cell {
     
     private Ant ant;                    // The ant that is in the Cell; null if there is no ant in the Cell.
     private boolean rocky;              // True if the Cell is rocky; false otherwise.
-    private int food;                   // The amount of food in the Cell.
+    private int food;               // The amount of food in the Cell - Default no food.
     private boolean[] redMarkers;       // Each cell of the array represents a marker 0 to 5; the boolean values show if those markers are set.
     private boolean[] blackMarkers;
     private Color anthill;              // Set to a Color if the Cell is part of that color anthill or null otherwise.
@@ -20,15 +20,43 @@ public class Cell {
      * @param ant The ant to put on the anthill space.
      */
     public Cell(Ant ant) {
+        this.ant = ant;
+        anthill = ant.getColor();
+        rocky = false;
+        food = 0;
+        
+        redMarkers = new boolean[6];
+        blackMarkers = new boolean[6];
     }
 
     /**
-     * Used to create rocky or clear cells with the given amount of food.
+     * Used to create rocky or clear cells with no food.
      * 
      * @param rocky If the Cell is rocky or clear.
+     */
+    public Cell(boolean rocky) { 
+        this.rocky = rocky;
+        anthill = null;
+        food = 0;
+        ant = null;
+        
+        redMarkers = new boolean[6];
+        blackMarkers = new boolean[6];
+    }
+    
+    /**
+     * Used to create clear cell with the given amount of food.
+     * 
      * @param food The amount of food to put in the Cell.
      */
-    public Cell(boolean rocky, int food) { 
+    public Cell(int food) { 
+        this.food = food;
+        rocky = false;
+        ant = null;
+        anthill = null;
+        
+        redMarkers = new boolean[6];
+        blackMarkers = new boolean[6];
     }
     
     /**
@@ -77,12 +105,12 @@ public class Cell {
     }
     
     /**
-     * Returns true if the cell is part of an anthill; false otherwise.
+     * Returns the color of the anthill on the cell or null if the cell is not an anthill.
      * 
-     * @return True if the cell is part of an anthill; false otherwise.
+     * @return The color of the anthill on the cell or null if the cell is not an anthill.
      */
-    public boolean isAnthill(){
-        return true;
+    public Color isAnthill(){
+        return anthill;
     }
     
     /**
@@ -93,7 +121,16 @@ public class Cell {
      * @return true if the Cell contains a marker of the given type and given color.
      */
     public boolean isMarkerSet(int marker, Color color){
-        return true;
+        
+        boolean set = false;
+        
+        if (color == Color.Red){
+            set = redMarkers[marker];
+        } else {
+             set = blackMarkers[marker];
+        }
+        
+        return set;
     }
     
     /**
@@ -103,6 +140,11 @@ public class Cell {
      * @param color The color of the marker to set.
      */
     public void setMarker(int marker, Color color){
+        if (color == Color.Red){
+            redMarkers[marker] = true;
+        } else {
+            blackMarkers[marker] = true;
+        }
     }
     
     /**
@@ -112,5 +154,10 @@ public class Cell {
      * @param color The color of the marker to unset.
      */
     public void unsetMarker(int marker, Color color){
+        if (color == Color.Red){
+            redMarkers[marker] = false;
+        } else {
+            blackMarkers[marker] = false;
+        }
     }
 }

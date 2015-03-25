@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Tests for the AntBrain class.
  * 
  * @author 118435
- * @version 22 March 2015
+ * @version 23 March 2015
  */
 public class AntBrainTest {
     private AntBrain ab;
@@ -122,7 +122,7 @@ public class AntBrainTest {
         assertEquals(15, flip4.getState2());
         
         assertEquals(true, ab.getState(14).getClass().equals(Turn.class));
-        Turn turn4 = (Turn)ab.getState(4);
+        Turn turn4 = (Turn)ab.getState(14);
         assertEquals(LeftOrRight.Right, turn4.getLeftOrRight());
         assertEquals(8, turn4.getState());
         
@@ -419,14 +419,48 @@ public class AntBrainTest {
     @Test
     public void testGetState() {
         ab.loadAntBrain("AntFiles/testAnt2.ant");
-        assertEquals(new Sense(SenseDirection.RightAhead, 8, 3, Condition.Home), ab.getState(0));
-        assertEquals(new Mark(3, 72), ab.getState(1));
-        assertEquals(new Unmark(4, 5), ab.getState(2));
-        assertEquals(new PickUp(62, 3), ab.getState(3));
-        assertEquals(new Drop(0), ab.getState(4));
-        assertEquals(new Turn(LeftOrRight.Right, 43), ab.getState(5));
-        assertEquals(new Move(12, 456), ab.getState(6));
-        assertEquals(new Flip(12, 0, 46), ab.getState(7));
+
+        assertEquals(true, ab.getState(0).getClass().equals(Sense.class));
+        Sense sense = (Sense)ab.getState(0);
+        assertEquals(SenseDirection.RightAhead, sense.getDirection());
+        assertEquals(8, sense.getState1());
+        assertEquals(3, sense.getState2());
+        assertEquals(Condition.Home, sense.getCondition());
+       
+        assertEquals(true, ab.getState(1).getClass().equals(Mark.class));
+        Mark mark = (Mark)ab.getState(1);
+        assertEquals(3, mark.getMarker());
+        assertEquals(72, mark.getState());
+        
+        assertEquals(true, ab.getState(2).getClass().equals(Unmark.class));
+        Unmark unmark = (Unmark)ab.getState(2);
+        assertEquals(4, unmark.getMarker());
+        assertEquals(5, unmark.getState());
+        
+        assertEquals(true, ab.getState(3).getClass().equals(PickUp.class));
+        PickUp pickUp = (PickUp)ab.getState(3);
+        assertEquals(62, pickUp.getState1());
+        assertEquals(3, pickUp.getState2());
+        
+        assertEquals(true, ab.getState(4).getClass().equals(Drop.class));
+        Drop drop = (Drop)ab.getState(4);
+        assertEquals(0, drop.getState());
+        
+        assertEquals(true, ab.getState(5).getClass().equals(Turn.class));
+        Turn turn = (Turn)ab.getState(5);
+        assertEquals(LeftOrRight.Right, turn.getLeftOrRight());
+        assertEquals(43, turn.getState());
+        
+        assertEquals(true, ab.getState(6).getClass().equals(Move.class));
+        Move move = (Move)ab.getState(6);
+        assertEquals(12, move.getState1());
+        assertEquals(456, move.getState2());
+        
+        assertEquals(true, ab.getState(7).getClass().equals(Flip.class));
+        Flip flip = (Flip)ab.getState(7);
+        assertEquals(12, flip.getMaxNumber());
+        assertEquals(0, flip.getState1());
+        assertEquals(46, flip.getState2());
     }
     
 }

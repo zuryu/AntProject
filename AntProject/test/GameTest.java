@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  * Tests for the Game class.
  * 
  * @author 118435
- * @version 22 March 2015
+ * @version 23 March 2015
  */
 public class GameTest {
     private Game game;
@@ -31,7 +31,7 @@ public class GameTest {
     
     @Before
     public void setUp() {        
-        game = new Game("../WorldFiles/tiny.world", "../AntFiles/testAnt2.ant", "../AntFiles/testAnt2.ant");
+        game = new Game("WorldFiles/tiny.world", "AntFiles/testAnt2.ant", "AntFiles/testAnt2.ant");
         game2 = new Game();
     }
     
@@ -94,7 +94,7 @@ public class GameTest {
     @Test
     public void testAnt_is_alive() {
         assertEquals(true, game.ant_is_alive(0));
-        game.getWorld().kill_ant_at(game.find_ant(0));
+        game.kill_ant_at(game.find_ant(0));
         assertEquals(false, game.ant_is_alive(0));
     }
 
@@ -106,18 +106,63 @@ public class GameTest {
         game.getWorld().set_ant_at(new Position(10, 20), new Ant(Color.Black, 8));
         assertEquals(10, game.find_ant(8).x);
         assertEquals(20, game.find_ant(8).y);
+    } 
+    
+    /**
+     * Test of kill_ant_at method, of class World.
+     */
+    @Test
+    public void testKill_ant_at() {
+        int id = game.getWorld().ant_at(new Position(5, 2)).getId();
+        assertEquals(true, game.getWorld().some_ant_is_at(new Position(5, 2)));
+        assertEquals(true, game.ant_is_alive(id));
+        game.kill_ant_at(new Position(5, 2));
+        assertEquals(false, game.getWorld().some_ant_is_at(new Position(5, 2)));
+        assertEquals(false, game.ant_is_alive(id));
+    }
+    
+     /**
+     * Test of check_for_surrounded_ant_at method, of class World.
+     */
+    @Test
+    public void testCheck_for_surrounded_ant_at() {
+        game.getWorld().clear_ant_at(new Position(4, 6));
+        game.getWorld().clear_ant_at(new Position(5, 4));
+        game.getWorld().set_ant_at(new Position(4, 6), new Ant(Color.Black, 5));
+        game.getWorld().set_ant_at(new Position(5, 4), new Ant(Color.Red, 6));
+        
+        
+        assertEquals(6, game.getWorld().adjacent_ants(new Position(4, 6), Color.Red));
+        assertEquals(4, game.getWorld().adjacent_ants(new Position(5, 4), Color.Black));
+        assertEquals(true, game.getWorld().some_ant_is_at(new Position(4, 6)));
+        assertEquals(true, game.getWorld().some_ant_is_at(new Position(5, 4)));
+        
+        game.check_for_surrounded_ant_at(new Position(4, 6));
+        game.check_for_surrounded_ant_at(new Position(5, 4));
+        
+        assertEquals(false, game.getWorld().some_ant_is_at(new Position(4, 6)));
+        assertEquals(true, game.getWorld().some_ant_is_at(new Position(5, 4)));
     }
 
     /**
-     * Test of turn method, of class Game.
+     * Test of check_for_surrounded_ants method, of class World.
      */
     @Test
-    public void testTurn() {
-        assertEquals(5, game.turn(LeftOrRight.Left, 0));
-        assertEquals(3, game.turn(LeftOrRight.Left, 4));
+    public void testCheck_for_surrounded_ants() {
+        game.getWorld().clear_ant_at(new Position(4, 6));
+        game.getWorld().clear_ant_at(new Position(5, 4));
+        game.getWorld().set_ant_at(new Position(4, 6), new Ant(Color.Black, 5));
+        game.getWorld().set_ant_at(new Position(5, 4), new Ant(Color.Red, 6));
         
-        assertEquals(0, game.turn(LeftOrRight.Right, 5));
-        assertEquals(4, game.turn(LeftOrRight.Right, 3));
+        assertEquals(6, game.getWorld().adjacent_ants(new Position(4, 6), Color.Red));
+        assertEquals(4, game.getWorld().adjacent_ants(new Position(5, 4), Color.Black));
+        assertEquals(true, game.getWorld().some_ant_is_at(new Position(4, 6)));
+        assertEquals(true, game.getWorld().some_ant_is_at(new Position(5, 4)));
+        
+        game.check_for_surrounded_ants(new Position(3, 5));
+        game.check_for_surrounded_ants(new Position(4, 5));
+        
+        assertEquals(false, game.getWorld().some_ant_is_at(new Position(4, 6)));
+        assertEquals(true, game.getWorld().some_ant_is_at(new Position(5, 4)));
     }
-    
 }

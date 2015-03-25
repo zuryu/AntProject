@@ -65,5 +65,5 @@ public class Sense extends State {
      */
     public Condition getCondition() {
         return condition;
-    }   
+    }      
 }

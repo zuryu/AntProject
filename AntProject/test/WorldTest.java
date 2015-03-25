@@ -1,5 +1,6 @@
 
 import States.Condition;
+import States.LeftOrRight;
 import States.SenseDirection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -12,7 +13,7 @@ import static org.junit.Assert.*;
  * Tests for the World class.
  * 
  * @author 118435
- * @version 22 March 2015
+ * @version 23 March 2015
  */
 public class WorldTest {
     
@@ -32,7 +33,7 @@ public class WorldTest {
     @Before
     public void setUp() {
         world = new World();
-        world.loadWorld("../WorldFiles/tiny.world");
+        world.loadWorld("WorldFiles/tiny.world");
     }
     
     @After
@@ -44,9 +45,13 @@ public class WorldTest {
      */
     @Test
     public void testAdjacent_cell() {
-        assertEquals(new Position(5, 5), world.adjacent_cell(new Position(6, 6), 4));
-        assertEquals(new Position(2, 3), world.adjacent_cell(new Position(3, 2), 2));
-        assertEquals(new Position(2, 4), world.adjacent_cell(new Position(1, 4), 0));
+        assertEquals(5, world.adjacent_cell(new Position(6, 6), 4).getX());
+        assertEquals(2, world.adjacent_cell(new Position(3, 2), 2).getX());
+        assertEquals(2, world.adjacent_cell(new Position(1, 4), 0).getX());
+        
+        assertEquals(5, world.adjacent_cell(new Position(6, 6), 4).getY());
+        assertEquals(3, world.adjacent_cell(new Position(3, 2), 2).getY());
+        assertEquals(4, world.adjacent_cell(new Position(1, 4), 0).getY());
     }
 
     /**
@@ -54,10 +59,15 @@ public class WorldTest {
      */
     @Test
     public void testSensed_cell() {
-        assertEquals(new Position(4, 7), world.sensed_cell(new Position(4, 7), 5, SenseDirection.Here));
-        assertEquals(new Position(2, 0), world.sensed_cell(new Position(1, 0), 0, SenseDirection.Ahead));
-        assertEquals(new Position(3, 4), world.sensed_cell(new Position(3, 3), 3, SenseDirection.LeftAhead));
-        assertEquals(new Position(1, 5), world.sensed_cell(new Position(2, 4), 1, SenseDirection.RightAhead));
+        assertEquals(4, world.sensed_cell(new Position(4, 7), 5, SenseDirection.Here).getX());
+        assertEquals(2, world.sensed_cell(new Position(1, 0), 0, SenseDirection.Ahead).getX());
+        assertEquals(3, world.sensed_cell(new Position(3, 3), 3, SenseDirection.LeftAhead).getX());
+        assertEquals(1, world.sensed_cell(new Position(2, 4), 1, SenseDirection.RightAhead).getX());
+        
+        assertEquals(7, world.sensed_cell(new Position(4, 7), 5, SenseDirection.Here).getY());
+        assertEquals(0, world.sensed_cell(new Position(1, 0), 0, SenseDirection.Ahead).getY());
+        assertEquals(4, world.sensed_cell(new Position(3, 3), 3, SenseDirection.LeftAhead).getY());
+        assertEquals(5, world.sensed_cell(new Position(2, 4), 1, SenseDirection.RightAhead).getY());
     }
 
     /**
@@ -127,16 +137,6 @@ public class WorldTest {
         assertEquals(true, world.some_ant_is_at(new Position(4, 5)));
         world.clear_ant_at(new Position(4, 5));
         assertEquals(false, world.some_ant_is_at(new Position(4, 5)));
-    }
-
-    /**
-     * Test of kill_ant_at method, of class World.
-     */
-    @Test
-    public void testKill_ant_at() {
-        assertEquals(true, world.some_ant_is_at(new Position(5, 2)));
-        world.kill_ant_at(new Position(5, 2));
-        assertEquals(false, world.some_ant_is_at(new Position(5, 2)));
     }
 
     /**
@@ -246,51 +246,6 @@ public class WorldTest {
     }
 
     /**
-     * Test of check_for_surrounded_ant_at method, of class World.
-     */
-    @Test
-    public void testCheck_for_surrounded_ant_at() {
-        world.clear_ant_at(new Position(4, 6));
-        world.clear_ant_at(new Position(5, 4));
-        world.set_ant_at(new Position(4, 6), new Ant(Color.Black, 5));
-        world.set_ant_at(new Position(5, 4), new Ant(Color.Red, 6));
-        
-        
-        assertEquals(6, world.adjacent_ants(new Position(4, 6), Color.Red));
-        assertEquals(4, world.adjacent_ants(new Position(5, 4), Color.Black));
-        assertEquals(true, world.some_ant_is_at(new Position(4, 6)));
-        assertEquals(true, world.some_ant_is_at(new Position(5, 4)));
-        
-        world.check_for_surrounded_ant_at(new Position(4, 6));
-        world.check_for_surrounded_ant_at(new Position(5, 4));
-        
-        assertEquals(false, world.some_ant_is_at(new Position(4, 6)));
-        assertEquals(true, world.some_ant_is_at(new Position(5, 4)));
-    }
-
-    /**
-     * Test of check_for_surrounded_ants method, of class World.
-     */
-    @Test
-    public void testCheck_for_surrounded_ants() {
-        world.clear_ant_at(new Position(4, 6));
-        world.clear_ant_at(new Position(5, 4));
-        world.set_ant_at(new Position(4, 6), new Ant(Color.Black, 5));
-        world.set_ant_at(new Position(5, 4), new Ant(Color.Red, 6));
-        
-        assertEquals(6, world.adjacent_ants(new Position(4, 6), Color.Red));
-        assertEquals(4, world.adjacent_ants(new Position(5, 4), Color.Black));
-        assertEquals(true, world.some_ant_is_at(new Position(4, 6)));
-        assertEquals(true, world.some_ant_is_at(new Position(5, 4)));
-        
-        world.check_for_surrounded_ants(new Position(3, 5));
-        world.check_for_surrounded_ants(new Position(4, 5));
-        
-        assertEquals(false, world.some_ant_is_at(new Position(4, 6)));
-        assertEquals(true, world.some_ant_is_at(new Position(5, 4)));
-    }
-
-    /**
      * Test of other_color method, of class World.
      */
     @Test
@@ -299,4 +254,15 @@ public class WorldTest {
         assertEquals(Color.Red, world.other_color(Color.Black));
     }
     
+    /**
+     * Test of turn method, of class World.
+     */
+    @Test
+    public void testTurn() {
+        assertEquals(5, world.turn(LeftOrRight.Left, 0));
+        assertEquals(3, world.turn(LeftOrRight.Left, 4));
+        
+        assertEquals(0, world.turn(LeftOrRight.Right, 5));
+        assertEquals(4, world.turn(LeftOrRight.Right, 3));
+    }
 }

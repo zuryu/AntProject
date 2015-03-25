@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * return a state based on its index.
  * 
  * @author 118435
- * @version 18 March 2015
+ * @version 23 March 2015
  */
 public class AntBrain {
     
@@ -39,10 +39,14 @@ public class AntBrain {
      */
     public final void loadAntBrain(String path){
         try{
+            states = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new FileReader(path)); 
             String line;
             while ((line = reader.readLine()) != null){
-                checkState(line);
+                State state = checkState(line);
+                if (state != null){
+                    states.add(state);
+                }
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(AntBrain.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,6 +66,10 @@ public class AntBrain {
         
         ArrayList<String> words = splitWords(line);
 
+        if (words.size() <= 0){
+            return null;
+        }
+        
         switch (words.get(0)){
             case "Sense":
                 return checkSense(words);
@@ -85,9 +93,10 @@ public class AntBrain {
     }
     
     /**
+     * Splits a String by the whitespace.
      * 
-     * @param line
-     * @return 
+     * @param line The String to split.
+     * @return An arrayList holding all the words in the String.
      */
     public ArrayList<String> splitWords(String line){
         ArrayList<String> words = new ArrayList<>();
@@ -102,6 +111,11 @@ public class AntBrain {
                 word = "";
             }
         }
+        
+        if (!word.isEmpty()){
+            words.add(word);
+        }
+        
         return words;
     }
     
@@ -124,19 +138,19 @@ public class AntBrain {
      * @return A Sense object representing the sense instruction.
      */
     private Sense checkSense(ArrayList<String> words){
-        if (instruction.length < 5){
+        if (words.size() < 5){
             throw new IllegalArgumentException("Not enough arguments for Sense instruction.");
         }
         
-        if (instruction[4].equals("Marker") && instruction.length < 6){
-            throw new IllegalArgumentException("Marker index not given in Sense instruction or too many arguments given.");
+        if (words.get(4).equals("Marker") && words.size() < 6){
+            throw new IllegalArgumentException("Marker index not given in Sense instruction.");
         }
         
         SenseDirection direction;
         Condition cond;
         int state1;
         int state2;
-        switch (instruction[1]){
+        switch (words.get(1)){
             case "Here":
                 direction = SenseDirection.Here;
                 break;
@@ -153,7 +167,7 @@ public class AntBrain {
                 throw new IllegalArgumentException("Illegal SenseDirection in Sense instruction.");
         }
         
-        switch (instruction[4]){
+        switch (words.get(4)){
             case "Friend":
                 cond = Condition.Friend;
                 break;
@@ -173,7 +187,7 @@ public class AntBrain {
                 cond = Condition.Rock;
                 break;
             case "Marker":
-                switch (instruction[5]){
+                switch (words.get(5)){
                     case "0":
                         cond = Condition.Marker0;
                         break;
@@ -209,8 +223,8 @@ public class AntBrain {
                 throw new IllegalArgumentException("Illegal condition in sense instruction.");
         }
         
-        state1 = Integer.parseInt(instruction[2]);
-        state2 = Integer.parseInt(instruction[3]);
+        state1 = Integer.parseInt(words.get(2));
+        state2 = Integer.parseInt(words.get(3));
         
         return new Sense(direction, state1, state2, cond);
     }
@@ -224,7 +238,14 @@ public class AntBrain {
      * @return A Mark object representing the mark instruction.
      */
     private Mark checkMark(ArrayList<String> words){
-        return null;
+        if (words.size() < 3){
+            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+        }
+        
+        int marker = Integer.parseInt(words.get(1));
+        int state = Integer.parseInt(words.get(2));
+        
+        return new Mark(marker, state);
     }
     
     /**
@@ -236,7 +257,14 @@ public class AntBrain {
      * @return An Unmark object representing the unmark instruction.
      */
     private Unmark checkUnmark(ArrayList<String> words){
-        return null;
+        if (words.size() < 3){
+            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+        }
+        
+        int marker = Integer.parseInt(words.get(1));
+        int state = Integer.parseInt(words.get(2));
+        
+        return new Unmark(marker, state);
     }
     
     /**
@@ -248,7 +276,14 @@ public class AntBrain {
      * @return A PickUp object representing the pickup instruction.
      */
     private PickUp checkPickUp(ArrayList<String> words){
-        return null;
+        if (words.size() < 3){
+            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+        }
+        
+        int state1 = Integer.parseInt(words.get(1));
+        int state2 = Integer.parseInt(words.get(2));
+        
+        return new PickUp(state1, state2);
     }
     
     /**
@@ -260,7 +295,13 @@ public class AntBrain {
      * @return A Drop object representing the drop instruction.
      */
     private Drop checkDrop(ArrayList<String> words){
-        return null;
+        if (words.size() < 2){
+            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+        }
+        
+        int state = Integer.parseInt(words.get(1));
+        
+        return new Drop(state);
     }
     
     /**
@@ -272,7 +313,24 @@ public class AntBrain {
      * @return A Turn object representing the turn instruction.
      */
     private Turn checkTurn(ArrayList<String> words){
-        return null;
+        if (words.size() < 3){
+            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+        }
+        
+        LeftOrRight leftOrRight;
+        switch (words.get(1)){
+            case "Left":
+                leftOrRight = LeftOrRight.Left;
+                break;
+            case "Right":
+                leftOrRight = LeftOrRight.Right;
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal LeftOrRight in Turn instruction.");
+        }
+        int state = Integer.parseInt(words.get(2));
+        
+        return new Turn(leftOrRight, state);
     }
     
     /**
@@ -284,7 +342,14 @@ public class AntBrain {
      * @return A Move object representing the move instruction.
      */
     private Move checkMove(ArrayList<String> words){
-        return null;
+        if (words.size() < 3){
+            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+        }
+        
+        int state1 = Integer.parseInt(words.get(1));
+        int state2 = Integer.parseInt(words.get(2));
+        
+        return new Move(state1, state2);
     }
     
     /**
@@ -296,6 +361,14 @@ public class AntBrain {
      * @return A Flip object representing the flip instruction.
      */
     private Flip checkFlip(ArrayList<String> words){
-        return null;
+        if (words.size() < 4){
+            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+        }
+        
+        int maxNumber = Integer.parseInt(words.get(1));
+        int state1 = Integer.parseInt(words.get(2));
+        int state2 = Integer.parseInt(words.get(3));
+        
+        return new Flip(maxNumber, state1, state2);
     }
 }
