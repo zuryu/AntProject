@@ -75,7 +75,7 @@ public class WorldTest {
      */
     @Test
     public void testLoadWorld() {
-        world.loadWorld("../WorldFiles/1.world");
+        world.loadWorld("WorldFiles/1.world");
     }
 
     /**

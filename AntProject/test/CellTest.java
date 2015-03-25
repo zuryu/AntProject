@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  * Tests for the Cell class.
  * 
  * @author 118435
- * @version 21 March 2015
+ * @version 25 March 2015
  */
 public class CellTest {
     
@@ -71,11 +71,11 @@ public class CellTest {
         assertEquals(null, c3.getAnt());
         
         c1.setAnt(null);
-        c2.setAnt(a1);
+        c3.setAnt(a1);
         
         assertEquals(null, c1.getAnt());
-        assertEquals(a1, c2.getAnt());
-        assertEquals(null, c3.getAnt());
+        assertEquals(a1, c3.getAnt());
+        assertEquals(null, c2.getAnt());
     }
 
     /**
@@ -88,14 +88,13 @@ public class CellTest {
         assertEquals(null, c3.getAnt());
         
         c1.setAnt(null);
-        c2.setAnt(a1);
+        c3.setAnt(a1);
         
         assertEquals(null, c1.getAnt());
-        assertEquals(a1, c2.getAnt());
-        assertEquals(null, c3.getAnt());
+        assertEquals(a1, c3.getAnt());
+        assertEquals(null, c2.getAnt());
         
         c1.setAnt(a1);
-        c2.setAnt(null);
         c3.setAnt(a1);
         
         assertEquals(a1, c1.getAnt());
@@ -156,9 +155,9 @@ public class CellTest {
      */
     @Test
     public void testIsAnthill() {
-        assertEquals(true, c1.isAnthill());
-        assertEquals(false, c2.isAnthill());
-        assertEquals(false, c3.isAnthill());
+        assertEquals(Color.Black, c1.isAnthill());
+        assertEquals(null, c2.isAnthill());
+        assertEquals(null, c3.isAnthill());
     }
 
     /**

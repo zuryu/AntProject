@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,12 +23,14 @@ public class World {
     private Cell[][] cells;
     private int x;
     private int y;
+    private HashMap<Integer, Position> ants;    // Holds the Position of every Ant in the world with its id as the key.
     
     /**
      * Creates an empty World, which can be used to load and 
      * check the world files. 
      */
     public World(){
+        ants = new HashMap<>();
     }
     
     /**
@@ -123,6 +126,9 @@ public class World {
                     }
                     for (int j = 0; j < x; j++){
                         cells[j][i] = parseCell(words.get(j));
+                        if (words.get(j).equals("+") || words.get(j).equals("-")){
+                            ants.put(ants.size(), new Position(j, i));
+                        }
                     }
                 }
             }
@@ -137,7 +143,7 @@ public class World {
         ArrayList<String> words = new ArrayList<>();
         String word = "";
         for (char letter : line.toCharArray()){
-            if (Character.isLetterOrDigit(letter)){
+            if (!Character.isWhitespace(letter)){
                 word = word.concat(Character.toString(letter));
             } else {
                 if (word.length() == 1){
@@ -159,8 +165,17 @@ public class World {
             case ".":
                 return new Cell(0);
             case "+":
-                Ant ant  = new Ant()
-                return new Cell()
+                Ant ant = new Ant(Color.Red, ants.size());
+                return new Cell(ant);
+            case "-":
+                Ant ant2 = new Ant(Color.Black, ants.size());
+                return new Cell(ant2);
+            case "1": case "2": case "3":
+            case "4": case "5": case "6":
+            case "7": case "8": case "9":
+                return new Cell(Integer.parseInt(cell));
+            default:
+                throw new IllegalArgumentException("Illegal symbol in world file : " + cell);
         }
     }
     
@@ -296,6 +311,7 @@ public class World {
             if (check_marker_at(p, color, i)){
                 marker = true;
             }
+            i++;
         }
         return marker;
     }
@@ -392,5 +408,14 @@ public class World {
             return ((direction + 5) % 6);
         }
         return ((direction + 1) % 6);
+    }
+    
+    /**
+     * Returns the hashMap of all the ant IDs and their Positions.
+     * 
+     * @return The hashMap of all the ant IDs and their Positions.
+     */
+    public HashMap<Integer, Position> getAnts(){
+        return ants;
     }
 }

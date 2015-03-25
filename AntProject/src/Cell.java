@@ -74,6 +74,9 @@ public class Cell {
      * @param ant The Ant to put in the Cell.
      */
     public void setAnt(Ant ant) {
+        if (rocky){
+            throw new UnsupportedOperationException("Can't put an ant in a rocky cell.");
+        }
         this.ant = ant;
     }
 
@@ -92,6 +95,9 @@ public class Cell {
      * @param food The amount of food the Cell should be holding.
      */
     public void setFood(int food) {
+        if (rocky){
+            throw new UnsupportedOperationException("Can't put food in a rocky cell.");
+        }
         this.food = food;
     }
     

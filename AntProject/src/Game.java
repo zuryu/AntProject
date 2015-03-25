@@ -8,32 +8,15 @@ import java.util.Random;
  * and handles the score etc.
  * 
  * @author 118435
- * @version 23 March 2015
+ * @version 25 March 2015
  */
 public class Game {
     
     private AntBrain red;                       // The AntBrain for the red ants.
     private AntBrain black;                     // The AntBrain for the black ants.
     private World world;                        // The world.
-    private HashMap<Integer, Position> ants;    // Holds the Position of every Ant in the world with its id as the key.
     
     private Random rand;
-    
-    /**
-     * Starts the ant game.
-     * 
-     * @param args Command-line arguments; none required. 
-     */
-    public static void main(String[] args){
-        new Game();
-    }
-    
-    /**
-     * Creates the game object and starts a game.
-     */
-    public Game(){
-        rand = new Random();
-    }
     
     /**
      * Creates the game object and loads the given world and ant brains.
@@ -43,6 +26,8 @@ public class Game {
      * @param ant2 The path to the second ant brain.
      */
     public Game(String world, String ant1, String ant2){
+        rand = new Random();
+        newGame(world, ant1, ant2);
     }
     
     /**
@@ -67,7 +52,7 @@ public class Game {
      * @param ant1 The path to the first ant brain file.
      * @param ant2 The path to the second ant brain file.
      */
-    public void newGame(String world, String ant1, String ant2){
+    public final void newGame(String world, String ant1, String ant2){
         this.world = new World();
         this.world.loadWorld(world);
         red = new AntBrain(ant1);
@@ -97,8 +82,9 @@ public class Game {
                 a.setResting(a.getResting() - 1);
             } else {
                 State state = get_instruction(a.getColor(), a.getState());
+                System.out.println(state.getClass().getName());
                 switch (state.getClass().getName()){
-                    case "Sense":
+                    case "States.Sense":
                         Sense sense = (Sense)state;
                         Position pos = world.sensed_cell(p, a.getDirection(), sense.getDirection());
                         int newState;
@@ -109,17 +95,17 @@ public class Game {
                         }
                         a.setState(newState);
                         break;
-                    case "Mark":
+                    case "States.Mark":
                         Mark mark = (Mark)state;
                         world.set_marker_at(p, a.getColor(), mark.getMarker());
                         a.setState(mark.getState());
                         break;
-                    case "Unmark":
+                    case "States.Unmark":
                         Unmark unmark = (Unmark)state;
                         world.clear_marker_at(p, a.getColor(), unmark.getMarker());
                         a.setState(unmark.getState());
                         break;
-                    case "PickUp":
+                    case "States.PickUp":
                         PickUp pickUp = (PickUp)state;
                         if (a.isHasFood() || world.food_at(p) == 0){
                             a.setState(pickUp.getState2());
@@ -129,7 +115,7 @@ public class Game {
                             a.setState(pickUp.getState1());
                         }
                         break;
-                    case "Drop":
+                    case "States.Drop":
                         Drop drop = (Drop)state;
                         if (a.isHasFood()){
                             world.set_food_at(p, world.food_at(p) + 1);
@@ -137,12 +123,12 @@ public class Game {
                         }
                         a.setState(drop.getState());
                         break;
-                    case "Turn":
+                    case "States.Turn":
                         Turn turn = (Turn)state;
                         a.setDirection(world.turn(turn.getLeftOrRight(), a.getDirection()));
                         a.setState(turn.getState());
                         break;
-                    case "Move":
+                    case "States.Move":
                         Move move = (Move)state;
                         Position newPos = world.adjacent_cell(p, a.getDirection());
                         if (world.rocky(newPos) || world.some_ant_is_at(newPos)){
@@ -155,7 +141,7 @@ public class Game {
                             check_for_surrounded_ants(newPos);
                         }
                         break;
-                    case "Flip":
+                    case "States.Flip":
                         Flip flip = (Flip)state;
                         int st;
                         if (randomint(flip.getMaxNumber()) == 0){
@@ -179,7 +165,7 @@ public class Game {
      * @return True if the Ant with the given id is alive; false otherwise.
      */
     public boolean ant_is_alive(int id){
-        return ants.containsKey(id);
+        return world.getAnts().containsKey(id);
     }
     
     /**
@@ -189,7 +175,7 @@ public class Game {
      * @return The Position of the Ant with the given id.
      */
     public Position find_ant(int id){
-        return ants.get(id);
+        return world.getAnts().get(id);
     }
     
     /**
@@ -201,7 +187,7 @@ public class Game {
         if (world.some_ant_is_at(p)){
             int id = world.ant_at(p).getId();
             world.clear_ant_at(p);
-            ants.remove(id);
+            world.getAnts().remove(id);
         }
     }
     

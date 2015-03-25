@@ -32,7 +32,7 @@ public class GameTest {
     @Before
     public void setUp() {        
         game = new Game("WorldFiles/tiny.world", "AntFiles/testAnt2.ant", "AntFiles/testAnt2.ant");
-        game2 = new Game();
+        game2 = new Game("WorldFiles/tiny.world", "AntFiles/testAnt2.ant", "AntFiles/testAnt2.ant");
     }
     
     @After
@@ -77,7 +77,7 @@ public class GameTest {
      */
     @Test
     public void testNewGame() {
-        game2.newGame("../WorldFiles/tiny.world", "../AntFiles/testAnt2.ant", "../AntFiles/testAnt2.ant");
+        game2.newGame("WorldFiles/tiny.world", "AntFiles/testAnt2.ant", "AntFiles/testAnt2.ant");
     }
 
     /**
@@ -103,9 +103,8 @@ public class GameTest {
      */
     @Test
     public void testFind_ant() {
-        game.getWorld().set_ant_at(new Position(10, 20), new Ant(Color.Black, 8));
-        assertEquals(10, game.find_ant(8).x);
-        assertEquals(20, game.find_ant(8).y);
+        assertEquals(4, game.find_ant(30).x);
+        assertEquals(7, game.find_ant(30).y);
     } 
     
     /**
