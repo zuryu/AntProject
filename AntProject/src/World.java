@@ -418,4 +418,16 @@ public class World {
     public HashMap<Integer, Position> getAnts(){
         return ants;
     }
+    
+    public Cell[][] getCells(){
+        return cells;
+    }
+    
+    public int getX(){
+        return x;
+    }
+    
+    public int getY(){
+        return y;
+    }
 }

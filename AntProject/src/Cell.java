@@ -1,4 +1,9 @@
 
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.Line2D;
+
+
 /**
  * This class represents a cell in the world of the ant game.
  * 
@@ -165,5 +170,12 @@ public class Cell {
         } else {
             blackMarkers[marker] = false;
         }
+    }
+    
+    public void drawCell(int x, int y, Graphics2D g2){
+        g2.draw(new Line2D.Double(new Point(x * 12, (y * 12) + 4), new Point((x * 12) + 6, y * 12)));
+        g2.draw(new Line2D.Double(new Point((x * 12) + 6, y * 12), new Point((x * 12) + 12, (y * 12) + 4)));
+        g2.draw(new Line2D.Double(new Point((x * 12) + 6, y * 12), new Point((x * 12) + 12, (y * 12) + 4)));
+
     }
 }
