@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 /**
  * Tests for the Cell class.
  * 
- * @author 118435
  * @version 25 March 2015
  */
 public class CellTest {
@@ -32,7 +31,7 @@ public class CellTest {
     
     @Before
     public void setUp() {
-        a1 = new Ant(Color.Black, 7);
+        a1 = new Ant(AntColor.Black, 7);
         c1 = new Cell(a1);
         c2 = new Cell(true);
         c3 = new Cell(5);
@@ -155,7 +154,7 @@ public class CellTest {
      */
     @Test
     public void testIsAnthill() {
-        assertEquals(Color.Black, c1.isAnthill());
+        assertEquals(AntColor.Black, c1.isAnthill());
         assertEquals(null, c2.isAnthill());
         assertEquals(null, c3.isAnthill());
     }
@@ -165,60 +164,60 @@ public class CellTest {
      */
     @Test
     public void testIsMarkerSet() {
-        assertEquals(false, c3.isMarkerSet(0, Color.Red));
-        assertEquals(false, c3.isMarkerSet(1, Color.Red));
-        assertEquals(false, c3.isMarkerSet(2, Color.Red));
-        assertEquals(false, c3.isMarkerSet(3, Color.Red));
-        assertEquals(false, c3.isMarkerSet(4, Color.Red));
-        assertEquals(false, c3.isMarkerSet(5, Color.Red));
+        assertEquals(false, c3.isMarkerSet(0, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(1, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(2, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(3, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(4, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(5, AntColor.Red));
         
-        assertEquals(false, c3.isMarkerSet(0, Color.Black));
-        assertEquals(false, c3.isMarkerSet(1, Color.Black));
-        assertEquals(false, c3.isMarkerSet(2, Color.Black));
-        assertEquals(false, c3.isMarkerSet(3, Color.Black));
-        assertEquals(false, c3.isMarkerSet(4, Color.Black));
-        assertEquals(false, c3.isMarkerSet(5, Color.Black));
+        assertEquals(false, c3.isMarkerSet(0, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(1, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(2, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(3, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(4, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(5, AntColor.Black));
         
-        c3.setMarker(0, Color.Red);
-        c3.setMarker(4, Color.Red);
-        c3.setMarker(5, Color.Red);
+        c3.setMarker(0, AntColor.Red);
+        c3.setMarker(4, AntColor.Red);
+        c3.setMarker(5, AntColor.Red);
         
-        c3.setMarker(1, Color.Black);
-        c3.setMarker(2, Color.Black);
+        c3.setMarker(1, AntColor.Black);
+        c3.setMarker(2, AntColor.Black);
         
-        assertEquals(true, c3.isMarkerSet(0, Color.Red));
-        assertEquals(false, c3.isMarkerSet(1, Color.Red));
-        assertEquals(false, c3.isMarkerSet(2, Color.Red));
-        assertEquals(false, c3.isMarkerSet(3, Color.Red));
-        assertEquals(true, c3.isMarkerSet(4, Color.Red));
-        assertEquals(true, c3.isMarkerSet(5, Color.Red));
+        assertEquals(true, c3.isMarkerSet(0, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(1, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(2, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(3, AntColor.Red));
+        assertEquals(true, c3.isMarkerSet(4, AntColor.Red));
+        assertEquals(true, c3.isMarkerSet(5, AntColor.Red));
         
-        assertEquals(false, c3.isMarkerSet(0, Color.Black));
-        assertEquals(true, c3.isMarkerSet(1, Color.Black));
-        assertEquals(true, c3.isMarkerSet(2, Color.Black));
-        assertEquals(false, c3.isMarkerSet(3, Color.Black));
-        assertEquals(false, c3.isMarkerSet(4, Color.Black));
-        assertEquals(false, c3.isMarkerSet(5, Color.Black));
+        assertEquals(false, c3.isMarkerSet(0, AntColor.Black));
+        assertEquals(true, c3.isMarkerSet(1, AntColor.Black));
+        assertEquals(true, c3.isMarkerSet(2, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(3, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(4, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(5, AntColor.Black));
         
-        c3.unsetMarker(0, Color.Red);
-        c3.unsetMarker(4, Color.Red);
-        c3.unsetMarker(5, Color.Red);
+        c3.unsetMarker(0, AntColor.Red);
+        c3.unsetMarker(4, AntColor.Red);
+        c3.unsetMarker(5, AntColor.Red);
         
-        c3.unsetMarker(1, Color.Black);
-        c3.unsetMarker(2, Color.Black);
+        c3.unsetMarker(1, AntColor.Black);
+        c3.unsetMarker(2, AntColor.Black);
         
-        assertEquals(false, c3.isMarkerSet(0, Color.Red));
-        assertEquals(false, c3.isMarkerSet(1, Color.Red));
-        assertEquals(false, c3.isMarkerSet(2, Color.Red));
-        assertEquals(false, c3.isMarkerSet(3, Color.Red));
-        assertEquals(false, c3.isMarkerSet(4, Color.Red));
-        assertEquals(false, c3.isMarkerSet(5, Color.Red));
+        assertEquals(false, c3.isMarkerSet(0, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(1, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(2, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(3, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(4, AntColor.Red));
+        assertEquals(false, c3.isMarkerSet(5, AntColor.Red));
         
-        assertEquals(false, c3.isMarkerSet(0, Color.Black));
-        assertEquals(false, c3.isMarkerSet(1, Color.Black));
-        assertEquals(false, c3.isMarkerSet(2, Color.Black));
-        assertEquals(false, c3.isMarkerSet(3, Color.Black));
-        assertEquals(false, c3.isMarkerSet(4, Color.Black));
-        assertEquals(false, c3.isMarkerSet(5, Color.Black));
+        assertEquals(false, c3.isMarkerSet(0, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(1, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(2, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(3, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(4, AntColor.Black));
+        assertEquals(false, c3.isMarkerSet(5, AntColor.Black));
     }    
 }

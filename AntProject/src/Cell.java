@@ -1,13 +1,7 @@
 
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.geom.Line2D;
-
-
 /**
  * This class represents a cell in the world of the ant game.
  * 
- * @author 118435
  * @version 25 March 2015
  */
 public class Cell {
@@ -17,7 +11,7 @@ public class Cell {
     private int food;               // The amount of food in the Cell - Default no food.
     private boolean[] redMarkers;       // Each cell of the array represents a marker 0 to 5; the boolean values show if those markers are set.
     private boolean[] blackMarkers;
-    private Color anthill;              // Set to a Color if the Cell is part of that color anthill or null otherwise.
+    private AntColor anthill;              // Set to a AntColor if the Cell is part of that color anthill or null otherwise.
 
     /**
      * Used to create anthill spaces.
@@ -78,7 +72,7 @@ public class Cell {
      * 
      * @param ant The Ant to put in the Cell.
      */
-    public void setAnt(Ant ant) {
+    public void setAnt(Ant ant) throws UnsupportedOperationException {
         if (rocky){
             throw new UnsupportedOperationException("Can't put an ant in a rocky cell.");
         }
@@ -99,7 +93,7 @@ public class Cell {
      * 
      * @param food The amount of food the Cell should be holding.
      */
-    public void setFood(int food) {
+    public void setFood(int food) throws UnsupportedOperationException {
         if (rocky){
             throw new UnsupportedOperationException("Can't put food in a rocky cell.");
         }
@@ -120,7 +114,7 @@ public class Cell {
      * 
      * @return The color of the anthill on the cell or null if the cell is not an anthill.
      */
-    public Color isAnthill(){
+    public AntColor isAnthill(){
         return anthill;
     }
     
@@ -131,11 +125,11 @@ public class Cell {
      * @param color The color of the marker to check for.
      * @return true if the Cell contains a marker of the given type and given color.
      */
-    public boolean isMarkerSet(int marker, Color color){
+    public boolean isMarkerSet(int marker, AntColor color){
         
         boolean set = false;
         
-        if (color == Color.Red){
+        if (color == AntColor.Red){
             set = redMarkers[marker];
         } else {
              set = blackMarkers[marker];
@@ -150,8 +144,8 @@ public class Cell {
      * @param marker The marker to set.
      * @param color The color of the marker to set.
      */
-    public void setMarker(int marker, Color color){
-        if (color == Color.Red){
+    public void setMarker(int marker, AntColor color){
+        if (color == AntColor.Red){
             redMarkers[marker] = true;
         } else {
             blackMarkers[marker] = true;
@@ -164,18 +158,11 @@ public class Cell {
      * @param marker The marker to unset.
      * @param color The color of the marker to unset.
      */
-    public void unsetMarker(int marker, Color color){
-        if (color == Color.Red){
+    public void unsetMarker(int marker, AntColor color){
+        if (color == AntColor.Red){
             redMarkers[marker] = false;
         } else {
             blackMarkers[marker] = false;
         }
-    }
-    
-    public void drawCell(int x, int y, Graphics2D g2){
-        g2.draw(new Line2D.Double(new Point(x * 12, (y * 12) + 4), new Point((x * 12) + 6, y * 12)));
-        g2.draw(new Line2D.Double(new Point((x * 12) + 6, y * 12), new Point((x * 12) + 12, (y * 12) + 4)));
-        g2.draw(new Line2D.Double(new Point((x * 12) + 6, y * 12), new Point((x * 12) + 12, (y * 12) + 4)));
-
-    }
+    }   
 }

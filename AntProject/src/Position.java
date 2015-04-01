@@ -2,7 +2,6 @@
 /**
  * This class represents the coordinates of the cells on a hexagonal grid.
  * 
- * @author 118435
  * @version 18 March 2015
  */
 public class Position {

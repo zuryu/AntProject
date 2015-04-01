@@ -11,7 +11,6 @@ import static org.junit.Assert.*;
 /**
  * Tests for the Game class.
  * 
- * @author 118435
  * @version 23 March 2015
  */
 public class GameTest {
@@ -44,32 +43,32 @@ public class GameTest {
      */
     @Test
     public void testGet_instruction() {
-        State state = game.get_instruction(Color.Red, 3);
+        State state = game.get_instruction(AntColor.Red, 3);
         assertEquals(state.getClass(), PickUp.class);
         PickUp pickUp = (PickUp)state;
-        assertEquals(62, pickUp.getState1());
+        assertEquals(1, pickUp.getState1());
         assertEquals(3, pickUp.getState2());
         
-        State state2 = game.get_instruction(Color.Red, 0);
+        State state2 = game.get_instruction(AntColor.Red, 0);
         assertEquals(state2.getClass(), Sense.class);
         Sense sense = (Sense)state2;
         assertEquals(SenseDirection.RightAhead, sense.getDirection());
-        assertEquals(8, sense.getState1());
+        assertEquals(6, sense.getState1());
         assertEquals(3, sense.getState2());
         assertEquals(Condition.Home, sense.getCondition());
         
-        State state3 = game.get_instruction(Color.Black, 7);
+        State state3 = game.get_instruction(AntColor.Black, 7);
         assertEquals(state3.getClass(), Flip.class);
         Flip flip = (Flip)state3;
         assertEquals(12, flip.getMaxNumber());
         assertEquals(0, flip.getState1());
-        assertEquals(46, flip.getState2());
+        assertEquals(4, flip.getState2());
         
-        State state4 = game.get_instruction(Color.Black, 5);
+        State state4 = game.get_instruction(AntColor.Black, 5);
         assertEquals(state4.getClass(), Turn.class);
         Turn turn = (Turn)state4;
         assertEquals(LeftOrRight.Right, turn.getLeftOrRight());
-        assertEquals(43, turn.getState());
+        assertEquals(3, turn.getState());
     }
 
     /**
@@ -77,7 +76,7 @@ public class GameTest {
      */
     @Test
     public void testNewGame() {
-        game2.newGame("WorldFiles/tiny.world", "AntFiles/testAnt2.ant", "AntFiles/testAnt2.ant");
+        game2.newGame();
     }
 
     /**
@@ -94,7 +93,7 @@ public class GameTest {
     @Test
     public void testAnt_is_alive() {
         assertEquals(true, game.ant_is_alive(0));
-        game.kill_ant_at(game.find_ant(0));
+        game.kill_ant_at(game.getWorld().find_ant(0));
         assertEquals(false, game.ant_is_alive(0));
     }
 
@@ -103,8 +102,8 @@ public class GameTest {
      */
     @Test
     public void testFind_ant() {
-        assertEquals(4, game.find_ant(30).x);
-        assertEquals(7, game.find_ant(30).y);
+        assertEquals(4, game.getWorld().find_ant(30).x);
+        assertEquals(7, game.getWorld().find_ant(30).y);
     } 
     
     /**
@@ -127,12 +126,12 @@ public class GameTest {
     public void testCheck_for_surrounded_ant_at() {
         game.getWorld().clear_ant_at(new Position(4, 6));
         game.getWorld().clear_ant_at(new Position(5, 4));
-        game.getWorld().set_ant_at(new Position(4, 6), new Ant(Color.Black, 5));
-        game.getWorld().set_ant_at(new Position(5, 4), new Ant(Color.Red, 6));
+        game.getWorld().set_ant_at(new Position(4, 6), new Ant(AntColor.Black, 5));
+        game.getWorld().set_ant_at(new Position(5, 4), new Ant(AntColor.Red, 6));
         
         
-        assertEquals(6, game.getWorld().adjacent_ants(new Position(4, 6), Color.Red));
-        assertEquals(4, game.getWorld().adjacent_ants(new Position(5, 4), Color.Black));
+        assertEquals(6, game.getWorld().adjacent_ants(new Position(4, 6), AntColor.Red));
+        assertEquals(4, game.getWorld().adjacent_ants(new Position(5, 4), AntColor.Black));
         assertEquals(true, game.getWorld().some_ant_is_at(new Position(4, 6)));
         assertEquals(true, game.getWorld().some_ant_is_at(new Position(5, 4)));
         
@@ -150,11 +149,11 @@ public class GameTest {
     public void testCheck_for_surrounded_ants() {
         game.getWorld().clear_ant_at(new Position(4, 6));
         game.getWorld().clear_ant_at(new Position(5, 4));
-        game.getWorld().set_ant_at(new Position(4, 6), new Ant(Color.Black, 5));
-        game.getWorld().set_ant_at(new Position(5, 4), new Ant(Color.Red, 6));
+        game.getWorld().set_ant_at(new Position(4, 6), new Ant(AntColor.Black, 5));
+        game.getWorld().set_ant_at(new Position(5, 4), new Ant(AntColor.Red, 6));
         
-        assertEquals(6, game.getWorld().adjacent_ants(new Position(4, 6), Color.Red));
-        assertEquals(4, game.getWorld().adjacent_ants(new Position(5, 4), Color.Black));
+        assertEquals(6, game.getWorld().adjacent_ants(new Position(4, 6), AntColor.Red));
+        assertEquals(4, game.getWorld().adjacent_ants(new Position(5, 4), AntColor.Black));
         assertEquals(true, game.getWorld().some_ant_is_at(new Position(4, 6)));
         assertEquals(true, game.getWorld().some_ant_is_at(new Position(5, 4)));
         

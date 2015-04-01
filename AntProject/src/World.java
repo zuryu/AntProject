@@ -15,8 +15,7 @@ import java.util.logging.Logger;
  * This class represents the game world of the ant game. A world is a 
  * hexagonal grid of 150 by 150.
  * 
- * @author 118435
- * @version 25 March 2015
+ * @version 1 April 2015
  */
 public class World {
     
@@ -24,6 +23,8 @@ public class World {
     private int x;
     private int y;
     private HashMap<Integer, Position> ants;    // Holds the Position of every Ant in the world with its id as the key.
+    private int redAnts;
+    private int blackAnts;
     
     /**
      * Creates an empty World, which can be used to load and 
@@ -31,6 +32,8 @@ public class World {
      */
     public World(){
         ants = new HashMap<>();
+        redAnts = 0;
+        blackAnts = 0;
     }
     
     /**
@@ -41,7 +44,7 @@ public class World {
      * @param direction The direction in which to get the adjacent cell.
      * @return The cell adjacent to the given cell in the given direction.
      */
-    public Position adjacent_cell(Position p, int direction){
+    public Position adjacent_cell(Position p, int direction) throws IllegalArgumentException{
         switch (direction){
             case 0:
                 return new Position(p.getX() + 1, p.getY());
@@ -84,7 +87,7 @@ public class World {
      * @param sense_direction The direction being sensed.
      * @return The position of the cell in the sensed direction given. 
      */
-    public Position sensed_cell(Position p, int direction, SenseDirection sense_direction){
+    public Position sensed_cell(Position p, int direction, SenseDirection sense_direction) throws IllegalArgumentException{
         switch (sense_direction.name()){
             case "Here":
                 return p;
@@ -105,7 +108,7 @@ public class World {
      * 
      * @param path The path to the world file.
      */
-    public void loadWorld(String path){
+    public void loadWorld(String path) throws IllegalArgumentException {
         try{
             
             BufferedReader reader = new BufferedReader(new FileReader(path)); 
@@ -139,6 +142,12 @@ public class World {
         }
     }
     
+    /**
+     * Splits the given string by whitespace and saves each symbol of the map in an ArrayList.
+     * 
+     * @param line A String which is one row of the map.
+     * @return An ArrayList containing the symbols of the map divided by the whitespace.
+     */
     private ArrayList<String> splitLine(String line){
         ArrayList<String> words = new ArrayList<>();
         String word = "";
@@ -158,17 +167,25 @@ public class World {
         return words;
     }
     
-    private Cell parseCell(String cell){
+    /**
+     * Returns a new cell constructed using the information contained in the given String.
+     * 
+     * @param cell A String representing the contents of the cell; Should only be one character.
+     * @return A new Cell object that matches the state described by the given String.
+     */
+    private Cell parseCell(String cell) throws IllegalArgumentException {
         switch (cell){
             case "#":
                 return new Cell(true);
             case ".":
                 return new Cell(0);
             case "+":
-                Ant ant = new Ant(Color.Red, ants.size());
+                Ant ant = new Ant(AntColor.Red, ants.size());
+                redAnts++;
                 return new Cell(ant);
             case "-":
-                Ant ant2 = new Ant(Color.Black, ants.size());
+                Ant ant2 = new Ant(AntColor.Black, ants.size());
+                blackAnts++;
                 return new Cell(ant2);
             case "1": case "2": case "3":
             case "4": case "5": case "6":
@@ -217,6 +234,11 @@ public class World {
      */
     public void set_ant_at(Position p, Ant ant){
         cells[p.getX()][p.getY()].setAnt(ant);
+        ants.replace(ant.getId(), p);
+//        if (ants.containsKey(ant.getId())){
+//            ants.remove(ant.getId());
+//        }
+//        ants.put(ant.getId(), p);
     }
     
     /**
@@ -255,8 +277,8 @@ public class World {
      * @param color The color of the anthill to check for.
      * @return true if an anthill of the given color is at the given Position.
      */
-    public boolean anthill_at(Position p, Color color){
-        Color anthill = cells[p.getX()][p.getY()].isAnthill();
+    public boolean anthill_at(Position p, AntColor color){
+        AntColor anthill = cells[p.getX()][p.getY()].isAnthill();
         return anthill == color;
     }
     
@@ -267,7 +289,7 @@ public class World {
      * @param color The color of the marker.
      * @param marker The marker to set.
      */
-    public void set_marker_at(Position p, Color color, int marker){
+    public void set_marker_at(Position p, AntColor color, int marker){
         cells[p.getX()][p.getY()].setMarker(marker, color);
     }
     
@@ -278,7 +300,7 @@ public class World {
      * @param color The color of the marker to clear.
      * @param marker The marker to clear.
      */
-    public void clear_marker_at(Position p, Color color, int marker){
+    public void clear_marker_at(Position p, AntColor color, int marker){
         cells[p.getX()][p.getY()].unsetMarker(marker, color);
     }
     
@@ -292,7 +314,7 @@ public class World {
      * @return true if the given marker exists at the given Position;
      * false otherwise.
      */
-    public boolean check_marker_at(Position p, Color color, int marker){
+    public boolean check_marker_at(Position p, AntColor color, int marker){
         return cells[p.getX()][p.getY()].isMarkerSet(marker, color);
     }
     
@@ -304,7 +326,7 @@ public class World {
      * @param color The color of the marker to check for.
      * @return True if a marker of the given color exists at the given Position.
      */
-    public boolean check_any_marker_at(Position p, Color color){
+    public boolean check_any_marker_at(Position p, AntColor color){
         boolean marker = false;
         int i = 0;
         while (!marker && i < 6){
@@ -324,7 +346,7 @@ public class World {
      * @param color The color of the ant checking for the condition.
      * @return True if the given condition exists with the given cell; false otherwise.
      */
-    public boolean cell_matches(Position p, Condition cond, Color color){
+    public boolean cell_matches(Position p, Condition cond, AntColor color) throws IllegalArgumentException {
         if (rocky(p)){
             return cond == Condition.Rock;
         } else {
@@ -372,7 +394,7 @@ public class World {
      * @param color The color of the ants to check for.
      * @return The number of ants that are adjacent to the given Position and are of the given color.
      */
-    public int adjacent_ants(Position p, Color color){
+    public int adjacent_ants(Position p, AntColor color){
         int number = 0;
         for (int i = 0; i < 6; i++){
             Position cell = adjacent_cell(p, i);
@@ -389,11 +411,11 @@ public class World {
      * @param color The color to get the opposite of 
      * @return The color of the opponent ants.
      */
-    public Color other_color(Color color){
-        if (color == Color.Black){
-            return Color.Red;
+    public AntColor other_color(AntColor color){
+        if (color == AntColor.Black){
+            return AntColor.Red;
         }
-        return Color.Black;
+        return AntColor.Black;
     }
     
     /**
@@ -419,15 +441,73 @@ public class World {
         return ants;
     }
     
+    /**
+     * Returns the cells of the world.
+     * 
+     * @return The Cells of the World.
+     */
     public Cell[][] getCells(){
         return cells;
     }
     
+    /**
+     * Returns the size of the world in the x direction.
+     * 
+     * @return The size of the world in the x direction.
+     */
     public int getX(){
         return x;
     }
     
+    /**
+     * Returns the size of the world in the y direction.
+     * 
+     * @return The size of the world in the y direction.
+     */
     public int getY(){
         return y;
+    }
+    
+    /**
+     * Removes the ant with the given ID from the ants list. Need to clear_ant_at(p) to remove the ant from the game.
+     * 
+     * @param id The ID of the ant to kill. 
+     */
+    public void killAnt(int id){
+        AntColor color = ant_at(ants.get(id)).getColor();
+        ants.remove(id);
+        if (color == AntColor.Black){
+            blackAnts--;
+        } else {
+            redAnts--;
+        }
+    }
+    
+    /**
+     * Returns the number of black ants in the world.
+     * 
+     * @return The number of black ants in the world. 
+     */
+    public int getBlackAnts(){
+        return blackAnts;
+    }
+    
+    /**
+     * Returns the number of red ants in the world.
+     * 
+     * @return The number of red ants in the world. 
+     */
+    public int getRedAnts(){
+        return redAnts;
+    }
+    
+    /**
+     * Returns the Position of the Ant with the given id.
+     * 
+     * @param id The ID of the ant to find.
+     * @return The Position of the Ant with the given id.
+     */
+    public Position find_ant(int id){
+        return ants.get(id);
     }
 }

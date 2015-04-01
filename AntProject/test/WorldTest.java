@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 /**
  * Tests for the World class.
  * 
- * @author 118435
  * @version 23 March 2015
  */
 public class WorldTest {
@@ -104,11 +103,11 @@ public class WorldTest {
      */
     @Test
     public void testAnt_at() {
-        Ant a = new Ant(Color.Red, 12);
+        Ant a = new Ant(AntColor.Red, 12);
         world.set_ant_at(new Position(3, 1), a);
         assertEquals(a, world.ant_at(new Position(3, 1)));
         
-        Ant b = new Ant(Color.Black, 3);
+        Ant b = new Ant(AntColor.Black, 3);
         world.set_ant_at(new Position(4, 8), b);
         assertEquals(b, world.ant_at(new Position(4, 8)));
     }
@@ -119,12 +118,12 @@ public class WorldTest {
     @Test
     public void testSet_ant_at() {
         assertEquals(false, world.some_ant_is_at(new Position(3, 1)));
-        Ant a = new Ant(Color.Red, 12);
+        Ant a = new Ant(AntColor.Red, 12);
         world.set_ant_at(new Position(3, 1), a);
         assertEquals(a, world.ant_at(new Position(3, 1)));
         
         assertEquals(false, world.some_ant_is_at(new Position(4, 8)));
-        Ant b = new Ant(Color.Black, 3);
+        Ant b = new Ant(AntColor.Black, 3);
         world.set_ant_at(new Position(4, 8), b);
         assertEquals(b, world.ant_at(new Position(4, 8)));
     }
@@ -164,14 +163,14 @@ public class WorldTest {
      */
     @Test
     public void testAnthill_at() {
-        assertEquals(true, world.anthill_at(new Position(4, 3), Color.Black));
-        assertEquals(false, world.anthill_at(new Position(4, 3), Color.Red));
+        assertEquals(true, world.anthill_at(new Position(4, 3), AntColor.Black));
+        assertEquals(false, world.anthill_at(new Position(4, 3), AntColor.Red));
         
-        assertEquals(true, world.anthill_at(new Position(5, 5), Color.Red));
-        assertEquals(false, world.anthill_at(new Position(5, 5), Color.Black));
+        assertEquals(true, world.anthill_at(new Position(5, 5), AntColor.Red));
+        assertEquals(false, world.anthill_at(new Position(5, 5), AntColor.Black));
         
-        assertEquals(false, world.anthill_at(new Position(0, 0), Color.Red));
-        assertEquals(false, world.anthill_at(new Position(0, 0), Color.Black));
+        assertEquals(false, world.anthill_at(new Position(0, 0), AntColor.Red));
+        assertEquals(false, world.anthill_at(new Position(0, 0), AntColor.Black));
     }
 
     /**
@@ -179,9 +178,9 @@ public class WorldTest {
      */
     @Test
     public void testSet_marker_at() {
-        assertEquals(false, world.check_marker_at(new Position(4, 5), Color.Red, 3));
-        world.set_marker_at(new Position(4, 5), Color.Red, 3);
-        assertEquals(true, world.check_marker_at(new Position(4, 5), Color.Red, 3));
+        assertEquals(false, world.check_marker_at(new Position(4, 5), AntColor.Red, 3));
+        world.set_marker_at(new Position(4, 5), AntColor.Red, 3);
+        assertEquals(true, world.check_marker_at(new Position(4, 5), AntColor.Red, 3));
     }
 
     /**
@@ -189,10 +188,10 @@ public class WorldTest {
      */
     @Test
     public void testClear_marker_at() {
-        world.set_marker_at(new Position(6, 1), Color.Black, 2);
-        assertEquals(true, world.check_marker_at(new Position(6, 1), Color.Black, 2));
-        world.clear_marker_at(new Position(6, 1), Color.Black, 2);
-        assertEquals(false, world.check_marker_at(new Position(6, 1), Color.Black, 2));
+        world.set_marker_at(new Position(6, 1), AntColor.Black, 2);
+        assertEquals(true, world.check_marker_at(new Position(6, 1), AntColor.Black, 2));
+        world.clear_marker_at(new Position(6, 1), AntColor.Black, 2);
+        assertEquals(false, world.check_marker_at(new Position(6, 1), AntColor.Black, 2));
     }
 
     /**
@@ -200,10 +199,10 @@ public class WorldTest {
      */
     @Test
     public void testCheck_marker_at() {
-        world.set_marker_at(new Position(5, 2), Color.Black, 0);
-        assertEquals(true, world.check_marker_at(new Position(5, 2), Color.Black, 0));
-        world.clear_marker_at(new Position(5, 2), Color.Black, 0);
-        assertEquals(false, world.check_marker_at(new Position(5, 2), Color.Black, 0));
+        world.set_marker_at(new Position(5, 2), AntColor.Black, 0);
+        assertEquals(true, world.check_marker_at(new Position(5, 2), AntColor.Black, 0));
+        world.clear_marker_at(new Position(5, 2), AntColor.Black, 0);
+        assertEquals(false, world.check_marker_at(new Position(5, 2), AntColor.Black, 0));
     }
 
     /**
@@ -211,11 +210,11 @@ public class WorldTest {
      */
     @Test
     public void testCheck_any_marker_at() {
-        world.set_marker_at(new Position(6, 1), Color.Black, 2);
-        assertEquals(true, world.check_any_marker_at(new Position(6, 1), Color.Black));
-        assertEquals(false, world.check_any_marker_at(new Position(6, 1), Color.Red));
-        world.clear_marker_at(new Position(6, 1), Color.Black, 2);
-        assertEquals(false, world.check_any_marker_at(new Position(6, 1), Color.Black));
+        world.set_marker_at(new Position(6, 1), AntColor.Black, 2);
+        assertEquals(true, world.check_any_marker_at(new Position(6, 1), AntColor.Black));
+        assertEquals(false, world.check_any_marker_at(new Position(6, 1), AntColor.Red));
+        world.clear_marker_at(new Position(6, 1), AntColor.Black, 2);
+        assertEquals(false, world.check_any_marker_at(new Position(6, 1), AntColor.Black));
     }
 
     /**
@@ -223,17 +222,17 @@ public class WorldTest {
      */
     @Test
     public void testCell_matches() {
-        assertEquals(true, world.cell_matches(new Position(7, 1), Condition.Food, Color.Red));
-        assertEquals(true, world.cell_matches(new Position(7, 2), Condition.Home, Color.Black));
-        assertEquals(true, world.cell_matches(new Position(4, 5), Condition.FoeHome, Color.Black));
-        assertEquals(true, world.cell_matches(new Position(5, 5), Condition.Friend, Color.Red));
-        assertEquals(true, world.cell_matches(new Position(7, 0), Condition.Rock, Color.Red));
+        assertEquals(true, world.cell_matches(new Position(7, 1), Condition.Food, AntColor.Red));
+        assertEquals(true, world.cell_matches(new Position(7, 2), Condition.Home, AntColor.Black));
+        assertEquals(true, world.cell_matches(new Position(4, 5), Condition.FoeHome, AntColor.Black));
+        assertEquals(true, world.cell_matches(new Position(5, 5), Condition.Friend, AntColor.Red));
+        assertEquals(true, world.cell_matches(new Position(7, 0), Condition.Rock, AntColor.Red));
         
-        assertEquals(false, world.cell_matches(new Position(7, 0), Condition.Food, Color.Red));
-        assertEquals(false, world.cell_matches(new Position(7, 2), Condition.Home, Color.Red));
-        assertEquals(false, world.cell_matches(new Position(4, 5), Condition.FoeHome, Color.Red));
-        assertEquals(false, world.cell_matches(new Position(5, 5), Condition.Friend, Color.Black));
-        assertEquals(false, world.cell_matches(new Position(7, 1), Condition.Rock, Color.Red));
+        assertEquals(false, world.cell_matches(new Position(7, 0), Condition.Food, AntColor.Red));
+        assertEquals(false, world.cell_matches(new Position(7, 2), Condition.Home, AntColor.Red));
+        assertEquals(false, world.cell_matches(new Position(4, 5), Condition.FoeHome, AntColor.Red));
+        assertEquals(false, world.cell_matches(new Position(5, 5), Condition.Friend, AntColor.Black));
+        assertEquals(false, world.cell_matches(new Position(7, 1), Condition.Rock, AntColor.Red));
     }
 
     /**
@@ -241,8 +240,8 @@ public class WorldTest {
      */
     @Test
     public void testAdjacent_ants() {
-        assertEquals(6, world.adjacent_ants(new Position(4, 6), Color.Red));
-        assertEquals(4, world.adjacent_ants(new Position(5, 4), Color.Black));
+        assertEquals(6, world.adjacent_ants(new Position(4, 6), AntColor.Red));
+        assertEquals(4, world.adjacent_ants(new Position(5, 4), AntColor.Black));
     }
 
     /**
@@ -250,8 +249,8 @@ public class WorldTest {
      */
     @Test
     public void testOther_color() {
-        assertEquals(Color.Black, world.other_color(Color.Red));
-        assertEquals(Color.Red, world.other_color(Color.Black));
+        assertEquals(AntColor.Black, world.other_color(AntColor.Red));
+        assertEquals(AntColor.Red, world.other_color(AntColor.Black));
     }
     
     /**

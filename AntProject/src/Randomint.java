@@ -2,7 +2,6 @@
 /**
  * This class represents the random number generator for the ant game.
  * 
- * @author 118435
  * @version 22 March 2015
  */
 public class Randomint {

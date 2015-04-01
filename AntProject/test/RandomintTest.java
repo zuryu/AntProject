@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 /**
  * Tests for the Randomint class.
  * 
- * @author 118435
  * @version 22 March 2015
  */
 public class RandomintTest {

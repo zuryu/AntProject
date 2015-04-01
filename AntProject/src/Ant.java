@@ -2,12 +2,11 @@
 /**
  * This class represents an ant in the ant game.
  * 
- * @author 118435
- * @version 18 March 2015
+ * @version 1 April 2015
  */
 public class Ant {
     
-    private Color color;        // The color of the ant.
+    private AntColor color;        // The color of the ant.
     private int state;          // The current state of the ant.
     private int resting;        // The number of turns the ant is resting for.
     private int direction;      // The direction the ant is facing.
@@ -20,7 +19,7 @@ public class Ant {
      * @param color The color of the ant.
      * @param id The ID of the ant.
      */
-    public Ant(Color color, int id) {
+    public Ant(AntColor color, int id) {
         this.color = color;
         this.id = id;
         state = 0;
@@ -34,7 +33,7 @@ public class Ant {
      * 
      * @return The color of the ant.
      */
-    public Color getColor() {
+    public AntColor getColor() {
         return color;
     }
 

@@ -5,7 +5,6 @@ package States;
  * This class represents the State of an ant brain when it is using the 
  * unmark command.
  * 
- * @author 118435
  * @version 22 March 2015
  */
 public class Unmark extends State {

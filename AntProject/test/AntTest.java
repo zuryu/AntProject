@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 /**
  * Tests for the Ant class.
  * 
- * @author 118435
  * @version 21 March 2015
  */
 public class AntTest {
@@ -30,8 +29,8 @@ public class AntTest {
     
     @Before
     public void setUp() {
-        a1 = new Ant(Color.Black, 0);
-        a2 = new Ant(Color.Red, 1);
+        a1 = new Ant(AntColor.Black, 0);
+        a2 = new Ant(AntColor.Red, 1);
     }
     
     @After
@@ -43,8 +42,8 @@ public class AntTest {
      */
     @Test
     public void testGetColor() {
-        assertEquals(Color.Black, a1.getColor());
-        assertEquals(Color.Red, a2.getColor());
+        assertEquals(AntColor.Black, a1.getColor());
+        assertEquals(AntColor.Red, a2.getColor());
     }
 
     /**

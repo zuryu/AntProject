@@ -10,7 +10,6 @@ import static org.junit.Assert.*;
 /**
  * Tests for the AntBrain class.
  * 
- * @author 118435
  * @version 23 March 2015
  */
 public class AntBrainTest {
@@ -218,15 +217,15 @@ public class AntBrainTest {
             switch (i){
                 case 0:
                     assertEquals(0, mark.getMarker());
-                    assertEquals(9, mark.getState());
+                    assertEquals(5, mark.getState());
                     break;
                 case 1:
                     assertEquals(1, mark.getMarker());
-                    assertEquals(7, mark.getState());
+                    assertEquals(4, mark.getState());
                     break;
                 case 2:
                     assertEquals(2, mark.getMarker());
-                    assertEquals(6, mark.getState());
+                    assertEquals(3, mark.getState());
                     break;
                 case 3:
                     assertEquals(3, mark.getMarker());
@@ -238,7 +237,7 @@ public class AntBrainTest {
                     break;
                 case 5:
                     assertEquals(5, mark.getMarker());
-                    assertEquals(9, mark.getState());
+                    assertEquals(1, mark.getState());
                     break;
                 default:
                     fail("Out of range in test Mark.");
@@ -258,7 +257,7 @@ public class AntBrainTest {
             switch (i){
                 case 0:
                     assertEquals(0, unmark.getMarker());
-                    assertEquals(51, unmark.getState());
+                    assertEquals(1, unmark.getState());
                     break;
                 case 1:
                     assertEquals(1, unmark.getMarker());
@@ -270,7 +269,7 @@ public class AntBrainTest {
                     break;
                 case 3:
                     assertEquals(3, unmark.getMarker());
-                    assertEquals(790, unmark.getState());
+                    assertEquals(5, unmark.getState());
                     break;
                 case 4:
                     assertEquals(4, unmark.getMarker());
@@ -297,16 +296,16 @@ public class AntBrainTest {
             PickUp pickUp = (PickUp)ab.getState(i);
             switch (i){
                 case 0:
-                    assertEquals(20, pickUp.getState1());
-                    assertEquals(9, pickUp.getState2());
+                    assertEquals(0, pickUp.getState1());
+                    assertEquals(1, pickUp.getState2());
                     break;
                 case 1:
                     assertEquals(1, pickUp.getState1());
-                    assertEquals(103, pickUp.getState2());
+                    assertEquals(2, pickUp.getState2());
                     break;
                 case 2:
                     assertEquals(0, pickUp.getState1());
-                    assertEquals(999, pickUp.getState2());
+                    assertEquals(1, pickUp.getState2());
                     break;
                 default:
                     fail("Out of range in test PickUp.");
@@ -328,10 +327,10 @@ public class AntBrainTest {
                     assertEquals(0, drop.getState());
                     break;
                 case 1:
-                    assertEquals(999, drop.getState());
+                    assertEquals(2, drop.getState());
                     break;
                 case 2:
-                    assertEquals(23, drop.getState());
+                    assertEquals(1, drop.getState());
                     break;
                 default:
                     fail("Out of range in test Drop.");
@@ -355,7 +354,7 @@ public class AntBrainTest {
                     break;
                 case 1:
                     assertEquals(LeftOrRight.Right, turn.getLeftOrRight());
-                    assertEquals(9230, turn.getState());
+                    assertEquals(1, turn.getState());
                     break;
                 default:
                     fail("Out of range in test Turn.");
@@ -374,12 +373,12 @@ public class AntBrainTest {
             Move move = (Move)ab.getState(i);
             switch (i){
                 case 0:
-                    assertEquals(18, move.getState1());
+                    assertEquals(1, move.getState1());
                     assertEquals(0, move.getState2());
                     break;
                 case 1:
-                    assertEquals(823, move.getState1());
-                    assertEquals(7320, move.getState2());
+                    assertEquals(1, move.getState1());
+                    assertEquals(0, move.getState2());
                     break;
                 default:
                     fail("Out of range in test Move.");
@@ -399,13 +398,13 @@ public class AntBrainTest {
             switch (i){
                 case 0:
                     assertEquals(10, flip.getMaxNumber());
-                    assertEquals(90, flip.getState1());
+                    assertEquals(0, flip.getState1());
                     assertEquals(1, flip.getState2());
                     break;
                 case 1:
                     assertEquals(2, flip.getMaxNumber());
                     assertEquals(0, flip.getState1());
-                    assertEquals(672, flip.getState2());
+                    assertEquals(1, flip.getState2());
                     break;
                 default:
                     fail("Out of range in test Flip.");
@@ -423,14 +422,14 @@ public class AntBrainTest {
         assertEquals(true, ab.getState(0).getClass().equals(Sense.class));
         Sense sense = (Sense)ab.getState(0);
         assertEquals(SenseDirection.RightAhead, sense.getDirection());
-        assertEquals(8, sense.getState1());
+        assertEquals(6, sense.getState1());
         assertEquals(3, sense.getState2());
         assertEquals(Condition.Home, sense.getCondition());
        
         assertEquals(true, ab.getState(1).getClass().equals(Mark.class));
         Mark mark = (Mark)ab.getState(1);
         assertEquals(3, mark.getMarker());
-        assertEquals(72, mark.getState());
+        assertEquals(2, mark.getState());
         
         assertEquals(true, ab.getState(2).getClass().equals(Unmark.class));
         Unmark unmark = (Unmark)ab.getState(2);
@@ -439,7 +438,7 @@ public class AntBrainTest {
         
         assertEquals(true, ab.getState(3).getClass().equals(PickUp.class));
         PickUp pickUp = (PickUp)ab.getState(3);
-        assertEquals(62, pickUp.getState1());
+        assertEquals(1, pickUp.getState1());
         assertEquals(3, pickUp.getState2());
         
         assertEquals(true, ab.getState(4).getClass().equals(Drop.class));
@@ -449,18 +448,18 @@ public class AntBrainTest {
         assertEquals(true, ab.getState(5).getClass().equals(Turn.class));
         Turn turn = (Turn)ab.getState(5);
         assertEquals(LeftOrRight.Right, turn.getLeftOrRight());
-        assertEquals(43, turn.getState());
+        assertEquals(3, turn.getState());
         
         assertEquals(true, ab.getState(6).getClass().equals(Move.class));
         Move move = (Move)ab.getState(6);
-        assertEquals(12, move.getState1());
-        assertEquals(456, move.getState2());
+        assertEquals(2, move.getState1());
+        assertEquals(5, move.getState2());
         
         assertEquals(true, ab.getState(7).getClass().equals(Flip.class));
         Flip flip = (Flip)ab.getState(7);
         assertEquals(12, flip.getMaxNumber());
         assertEquals(0, flip.getState1());
-        assertEquals(46, flip.getState2());
+        assertEquals(4, flip.getState2());
     }
     
 }

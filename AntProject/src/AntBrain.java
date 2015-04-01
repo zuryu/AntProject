@@ -13,12 +13,11 @@ import java.util.logging.Logger;
  * ant brain file and holds the states described in that file. It can 
  * return a state based on its index.
  * 
- * @author 118435
- * @version 23 March 2015
+ * @version 1 April 2015
  */
 public class AntBrain {
     
-    private ArrayList<State> states;     // An array holding all of the States of the AntBrain.
+    private ArrayList<State> states;     // An arraylist holding all of the States of the AntBrain.
     
     /**
      * Creates an empty AntBrain, which can be used to load and check the 
@@ -37,13 +36,18 @@ public class AntBrain {
      * 
      * @param path The file path to the user provided ant brain.
      */
-    public final void loadAntBrain(String path){
+    public final void loadAntBrain(String path) throws IllegalArgumentException {
         try{
             states = new ArrayList<>();
             BufferedReader reader = new BufferedReader(new FileReader(path)); 
             String line;
+            int i = 0;
             while ((line = reader.readLine()) != null){
                 State state = checkState(line);
+                i++;
+                if (i > 9999){
+                    throw new IllegalArgumentException("Too many lines in Ant Brain.");
+                }
                 if (state != null){
                     states.add(state);
                 }
@@ -53,6 +57,7 @@ public class AntBrain {
         } catch (IOException ex) {
             Logger.getLogger(AntBrain.class.getName()).log(Level.SEVERE, null, ex);
         }
+        antBrainCheck();
     }
     
     /**
@@ -62,7 +67,7 @@ public class AntBrain {
      * @param line The string of text describing the State.
      * @return The State object described by the given string.
      */
-    private State checkState(String line){
+    private State checkState(String line) throws IllegalArgumentException {
         
         ArrayList<String> words = splitWords(line);
 
@@ -98,7 +103,7 @@ public class AntBrain {
      * @param line The String to split.
      * @return An arrayList holding all the words in the String.
      */
-    public ArrayList<String> splitWords(String line){
+    private ArrayList<String> splitWords(String line){
         ArrayList<String> words = new ArrayList<>();
         String word = "";
         for (char letter : line.toCharArray()){
@@ -137,7 +142,7 @@ public class AntBrain {
      * @param instruction The sense instruction from the ant brain file.
      * @return A Sense object representing the sense instruction.
      */
-    private Sense checkSense(ArrayList<String> words){
+    private Sense checkSense(ArrayList<String> words) throws IllegalArgumentException {
         if (words.size() < 5){
             throw new IllegalArgumentException("Not enough arguments for Sense instruction.");
         }
@@ -237,7 +242,7 @@ public class AntBrain {
      * @param instruction The mark instruction from the ant brain file.
      * @return A Mark object representing the mark instruction.
      */
-    private Mark checkMark(ArrayList<String> words){
+    private Mark checkMark(ArrayList<String> words) throws IllegalArgumentException {
         if (words.size() < 3){
             throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
         }
@@ -256,9 +261,9 @@ public class AntBrain {
      * @param instruction The unmark instruction from the ant brain file.
      * @return An Unmark object representing the unmark instruction.
      */
-    private Unmark checkUnmark(ArrayList<String> words){
+    private Unmark checkUnmark(ArrayList<String> words) throws IllegalArgumentException {
         if (words.size() < 3){
-            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+            throw new IllegalArgumentException("Not enough arguments for Unmark instruction.");
         }
         
         int marker = Integer.parseInt(words.get(1));
@@ -275,9 +280,9 @@ public class AntBrain {
      * @param instruction The pickup instruction from the ant brain file.
      * @return A PickUp object representing the pickup instruction.
      */
-    private PickUp checkPickUp(ArrayList<String> words){
+    private PickUp checkPickUp(ArrayList<String> words) throws IllegalArgumentException {
         if (words.size() < 3){
-            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+            throw new IllegalArgumentException("Not enough arguments for PickUp instruction.");
         }
         
         int state1 = Integer.parseInt(words.get(1));
@@ -294,9 +299,9 @@ public class AntBrain {
      * @param instruction The drop instruction from the ant brain file.
      * @return A Drop object representing the drop instruction.
      */
-    private Drop checkDrop(ArrayList<String> words){
+    private Drop checkDrop(ArrayList<String> words) throws IllegalArgumentException {
         if (words.size() < 2){
-            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+            throw new IllegalArgumentException("Not enough arguments for Drop instruction.");
         }
         
         int state = Integer.parseInt(words.get(1));
@@ -312,9 +317,9 @@ public class AntBrain {
      * @param instruction The turn instruction from the ant brain file.
      * @return A Turn object representing the turn instruction.
      */
-    private Turn checkTurn(ArrayList<String> words){
+    private Turn checkTurn(ArrayList<String> words) throws IllegalArgumentException {
         if (words.size() < 3){
-            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+            throw new IllegalArgumentException("Not enough arguments for Turn instruction.");
         }
         
         LeftOrRight leftOrRight;
@@ -341,9 +346,9 @@ public class AntBrain {
      * @param instruction The move instruction from the ant brain file.
      * @return A Move object representing the move instruction.
      */
-    private Move checkMove(ArrayList<String> words){
+    private Move checkMove(ArrayList<String> words) throws IllegalArgumentException {
         if (words.size() < 3){
-            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+            throw new IllegalArgumentException("Not enough arguments for Move instruction.");
         }
         
         int state1 = Integer.parseInt(words.get(1));
@@ -360,9 +365,9 @@ public class AntBrain {
      * @param instruction The flip instruction from the ant brain file.
      * @return A Flip object representing the flip instruction.
      */
-    private Flip checkFlip(ArrayList<String> words){
+    private Flip checkFlip(ArrayList<String> words) throws IllegalArgumentException {
         if (words.size() < 4){
-            throw new IllegalArgumentException("Not enough arguments for Mark instruction.");
+            throw new IllegalArgumentException("Not enough arguments for Flip instruction.");
         }
         
         int maxNumber = Integer.parseInt(words.get(1));
@@ -370,5 +375,62 @@ public class AntBrain {
         int state2 = Integer.parseInt(words.get(3));
         
         return new Flip(maxNumber, state1, state2);
+    }
+    
+    private void antBrainCheck() throws IllegalArgumentException {
+        for (State state : states){
+            switch (state.getClass().getName()){
+                case "States.Sense":
+                    Sense sense = (Sense)state;
+                    if (sense.getState1() >= states.size() || sense.getState2() >= states.size()){
+                        throw new IllegalArgumentException("Illegal state in AntBrain sense.");
+                    }
+                    break;
+                case "States.Mark":
+                    Mark mark = (Mark)state;
+                    if (mark.getState() >= states.size()){
+                        throw new IllegalArgumentException("Illegal state in AntBrain mark.");
+                    }
+                    break;
+                case "States.Unmark":
+                    Unmark unmark = (Unmark)state;
+                    if (unmark.getState() >= states.size()){
+                        throw new IllegalArgumentException("Illegal state in AntBrain unmark.");
+                    }
+                    break;
+                case "States.PickUp":
+                    PickUp pickUp = (PickUp)state;
+                    if (pickUp.getState1() >= states.size() || pickUp.getState2() >= states.size()){
+                        throw new IllegalArgumentException("Illegal state in AntBrain pickup.");
+                    }                        
+                    break;
+                case "States.Drop":
+                    Drop drop = (Drop)state;
+                    if (drop.getState() >= states.size()){
+                        throw new IllegalArgumentException("Illegal state in AntBrain drop.");
+                    }
+                    break;
+                case "States.Turn":
+                    Turn turn = (Turn)state;
+                    if (turn.getState() >= states.size()){
+                        throw new IllegalArgumentException("Illegal state in AntBrain turn.");
+                    }
+                    break;
+                case "States.Move":
+                    Move move = (Move)state;
+                    if (move.getState1() >= states.size() || move.getState2() >= states.size()){
+                        throw new IllegalArgumentException("Illegal state in AntBrain move.");
+                    }
+                    break;
+                case "States.Flip":
+                    Flip flip = (Flip)state;
+                    if (flip.getState1() >= states.size() || flip.getState2() >= states.size()){
+                        throw new IllegalArgumentException("Illegal state in AntBrain flip.");
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Illegal state in AntBrain");
+            }           
+        }
     }
 }
