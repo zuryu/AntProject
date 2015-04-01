@@ -5,8 +5,6 @@ import java.awt.geom.Path2D;
 import java.io.File;
 import javax.swing.*;
 
-
-
 /**
  * This class creates the user interface for the ant game.
  */
@@ -26,15 +24,15 @@ public class View extends Thread {
     private boolean loadNew;
     private JDialog load;
     private Update update;
+    private boolean running;
     
     public static void main(String[] args){
         View myView = new View();
-        
     }
     
     public View(){
         update = new Update();  
-        
+        running = false;
         loadNew = false;
         fc = new JFileChooser();
         fc.setCurrentDirectory(new File("WorldFiles"));
@@ -96,23 +94,39 @@ public class View extends Thread {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (checkFile(worldText.getText(), true) && checkFile(ant1Text.getText(), false) && checkFile(ant2Text.getText(), false)){
-                    loadNew = false;
-                    load.setVisible(false);
+                    loadNew = true; 
+                    //load.setVisible(false);
                     game.resetGame(worldText.getText(), ant1Text.getText(), ant2Text.getText());
 //                    grid = new Grid();
+                    load.dispose();
                     
                     
                     grid.repaint();
                     frame.repaint();
+                    
+                    SwingWorker<String, Object> worker = new SwingWorker<String, Object>() {
+                        @Override
+                        protected String doInBackground() throws Exception { 
+                                          
+                            return update.update();
+                        }
+                        
+                        @Override
+                        protected void done() {                        
+                            grid.repaint();
+                        }
+                    };      
+                    worker.execute();
+                    
 //                    frame.pack();
                     //update();
-                    SwingUtilities.invokeLater(new Runnable(){
-
-                        @Override
-                        public void run() {
-                           update.update();
-                        }
-                    });
+//                    SwingUtilities.invokeLater(new Runnable(){
+//
+//                        @Override
+//                        public void run() {
+//                           update.update();
+//                        }
+//                    });
                     //update.update();
                 } else {
                     JOptionPane.showMessageDialog(frame, "Invalid world or ant files.\nWorld files have '.world' extension.\nAnt files have '.ant' extension.");
@@ -373,21 +387,28 @@ public class View extends Thread {
     
     public class Update extends Thread {
         
-        public void update(){
+        public String update(){
             System.out.println("Enter loop***********************************************************");
-            for (int j = 1; j < 3000; j++){
-                if (loadNew){
+            for (int j = 1; j < 3000; j++){grid.repaint();
+                if (loadNew && running){
                     loadNew = false;
-                    break;
+                    System.out.println("Exiting loop***********************************************************");
+                    return "";
+                } else {
+                    loadNew = false;
                 }
+                running = true;
                 System.out.println(j);
                 rounds.setText(Integer.toString(j));
                 game.newGame();
                 redNumber.setText(game.getWorld().getRedAnts() + "");
                 blackNumber.setText(game.getWorld().getBlackAnts() + "");
                 grid.repaint();
+                frame.repaint();
             }
+            running = false;
             System.out.println("Exiting loop***********************************************************");
+            return "";
         }
     }
 //    
