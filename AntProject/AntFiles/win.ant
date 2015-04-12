@@ -1,0 +1,14 @@
+Turn Left 1				; reds win
+Turn Left 2
+Turn Left 3
+Sense Ahead 3 4 Food	; 3 
+Move 3 5		; 4
+Sense Ahead 6 10 Rock	; 5
+Sense LeftAhead 7 3 Rock; 6
+Mark 1 8		; 7
+Turn Left 9		; 8
+Turn Left 7		; 9
+Turn Left 11		; 10
+Move 12 5		; 11
+Turn Right 13		; 12
+Move 10 5		; 13

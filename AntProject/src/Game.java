@@ -15,6 +15,9 @@ public class Game {
     private World world;                        // The world.
     private int blackScore;
     private int redScore;
+    private String redPath;
+    private String blackPath;
+    private String worldPath;
     
     private Random rand;
     
@@ -26,6 +29,9 @@ public class Game {
      * @param ant2 The path to the second ant brain.
      */
     public Game(String world, String ant1, String ant2){
+        redPath = ant1;
+        blackPath = ant2;
+        worldPath = world;
         rand = new Random();
         this.world = new World();
         this.world.loadWorld(world);
@@ -78,9 +84,6 @@ public class Game {
         if (ant_is_alive(id)){
             Position p = world.find_ant(id);
             Ant a = world.ant_at(p);
-            if (a == null){
-                System.out.println("---------------------------------------");
-            }
             if (a.getResting() > 0){
                 a.setResting(a.getResting() - 1);
             } else {
@@ -96,19 +99,16 @@ public class Game {
                             newState = sense.getState2();
                         }
                         a.setState(newState);
-                        System.out.println(a.getId() + " is Sensing.");
                         break;
                     case "States.Mark":
                         Mark mark = (Mark)state;
                         world.set_marker_at(p, a.getColor(), mark.getMarker());
                         a.setState(mark.getState());
-                        System.out.println(a.getId() + " is Marking.");
                         break;
                     case "States.Unmark":
                         Unmark unmark = (Unmark)state;
                         world.clear_marker_at(p, a.getColor(), unmark.getMarker());
                         a.setState(unmark.getState());
-                        System.out.println(a.getId() + " is Unmarking.");
                         break;
                     case "States.PickUp":
                         PickUp pickUp = (PickUp)state;
@@ -118,23 +118,30 @@ public class Game {
                             world.set_food_at(p, world.food_at(p) - 1);
                             a.setHasFood(true);
                             a.setState(pickUp.getState1());
+                            if (world.anthill_at(p, AntColor.Black)){
+                                blackScore--;
+                            } else if (world.anthill_at(p, AntColor.Red)){
+                                redScore--;
+                            }
                         }
-                        System.out.println(a.getId() + " is PickingUp.");
                         break;
                     case "States.Drop":
                         Drop drop = (Drop)state;
                         if (a.isHasFood()){
                             world.set_food_at(p, world.food_at(p) + 1);
                             a.setHasFood(false);
+                            if (world.anthill_at(p, AntColor.Black)){
+                                blackScore++;
+                            } else if (world.anthill_at(p, AntColor.Red)){
+                                redScore++;
+                            }
                         }
                         a.setState(drop.getState());
-                        System.out.println(a.getId() + " is Dropping.");
                         break;
                     case "States.Turn":
                         Turn turn = (Turn)state;
                         a.setDirection(world.turn(turn.getLeftOrRight(), a.getDirection()));
                         a.setState(turn.getState());
-                        System.out.println(a.getId() + " is Turning.");
                         break;
                     case "States.Move":
                         Move move = (Move)state;
@@ -148,7 +155,6 @@ public class Game {
                             a.setResting(14);
                             check_for_surrounded_ants(newPos);
                         }
-                        System.out.println(a.getId() + " is Moving.");
                         break;
                     case "States.Flip":
                         Flip flip = (Flip)state;
@@ -159,7 +165,6 @@ public class Game {
                             st = flip.getState2();
                         }
                         a.setState(st);
-                        System.out.println(a.getId() + " is Fliping.");
                         break;
                     default:
                         throw new IllegalArgumentException("Illegal state in step : Ant: " + a.getId());
@@ -206,6 +211,11 @@ public class Game {
                     foodHeld = 1;
                 }
                 world.set_food_at(p, world.food_at(p) + 3 + foodHeld);
+                if (world.anthill_at(p, AntColor.Red)){
+                    redScore += 3 + foodHeld;
+                } else if (world.anthill_at(p, AntColor.Black)){
+                    blackScore += 3 + foodHeld;
+                }
             }
         }
     }
@@ -231,6 +241,13 @@ public class Game {
         return world;
     }
     
+    /**
+     * Restarts the game with the given world and ant brains.
+     * 
+     * @param world The path to the world file.
+     * @param ant1 The path to the first ant brain.
+     * @param ant2 The path to the second ant brain.
+     */
     public void resetGame(String world, String ant1, String ant2){
         rand = new Random();
         this.world = new World();
@@ -239,5 +256,53 @@ public class Game {
         black = new AntBrain(ant2);
         blackScore = 0;
         redScore = 0;
+        redPath = ant1;
+        blackPath = ant2;
+        worldPath = world;
+    }
+    
+    /**
+     * Returns the score of the red ants.
+     * 
+     * @return The score of the red ants. 
+     */
+    public int getRedScore(){
+        return redScore;
+    }
+    
+    /**
+     * Returns the score of the black ants.
+     * 
+     * @return The score of the black ants.
+     */
+    public int getBlackScore(){
+        return blackScore;
+    }
+    
+    /**
+     * Returns the file path of the red ant brain.
+     * 
+     * @return The file path of the red ant brain. 
+     */
+    public String getRedPath(){
+        return redPath;
+    }
+    
+    /**
+     * Returns the file path of the black ant brain.
+     * 
+     * @return The file path of the black ant brain. 
+     */
+    public String getBlackPath(){
+        return blackPath;
+    }
+    
+    /**
+     * Returns the file path of the world.
+     * 
+     * @return The file path of the world.
+     */
+    public String getWorldPath(){
+        return worldPath;
     }
 }
